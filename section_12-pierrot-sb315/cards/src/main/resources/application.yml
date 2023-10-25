@@ -63,6 +63,9 @@ info:
     description: "Eazy Bank Cards Application"
     version: "1.0.0"
 
+build:
+  version: "@project.version@"
+
 logging:
   level:
     com:
