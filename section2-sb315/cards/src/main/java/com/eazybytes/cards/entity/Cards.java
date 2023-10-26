@@ -1,8 +1,10 @@
 package com.eazybytes.cards.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Getter
@@ -14,7 +16,6 @@ public class Cards extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO,generator="native")
-	@GenericGenerator(name = "native",strategy = "native")
 	private Long cardId;
 
 	private String mobileNumber;
