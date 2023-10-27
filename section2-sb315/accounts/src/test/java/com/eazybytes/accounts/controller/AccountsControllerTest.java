@@ -16,9 +16,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,11 +51,34 @@ class AccountsControllerTest {
     }
 
     @Test
-    void createAccount() {
+    void createAccount() throws Exception {
+        mockMvc.perform(post("/api/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customerDto)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.statusMsg").value(AccountsConstants.MESSAGE_201));
+
+        verify(iAccountsSrvMock).createAccount(customerDto);
     }
 
     @Test
-    void fetchAccountDetails() {
+    void fetchAccountDetails_MobileNr_OK() throws Exception {
+        // Given
+        given(iAccountsSrvMock.fetchAccount("1111111111")).willReturn(customerDto);
+
+        mockMvc.perform(get("/api/fetch")
+                        .param("mobileNumber","1111111111"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+    @Test
+    void fetchAccountDetails_MobileNr_NOT_VALID() throws Exception {
+        mockMvc.perform(get("/api/fetch")
+                        .param("mobileNumber","111111111"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.errorMessage").
+                        value(containsString("Mobile number must be 10 digits")))
+                .andDo(print());
     }
 
     @Test
@@ -112,6 +137,23 @@ class AccountsControllerTest {
     }
 
     @Test
-    void deleteAccountDetails() {
+    void deleteAccountDetails_AccountExists() throws Exception {
+        // Given
+        given(iAccountsSrvMock.deleteAccount(anyString())).willReturn(Boolean.TRUE);
+
+        mockMvc.perform(delete("/api/delete")
+                        .param("mobileNumber", customerDto.getMobileNumber()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("statusMsg").value(AccountsConstants.MESSAGE_200));
+    }
+    @Test
+    void deleteAccountDetails_Account_NOT_Exists() throws Exception {
+        // Given
+        given(iAccountsSrvMock.deleteAccount(anyString())).willReturn(Boolean.FALSE);
+
+        mockMvc.perform(delete("/api/delete")
+                        .param("mobileNumber", customerDto.getMobileNumber()))
+                .andExpect(status().isExpectationFailed())
+                .andExpect(jsonPath("statusMsg").value(AccountsConstants.MESSAGE_417_DELETE));
     }
 }
