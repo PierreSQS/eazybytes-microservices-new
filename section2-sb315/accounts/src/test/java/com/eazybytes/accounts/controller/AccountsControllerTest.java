@@ -1,6 +1,7 @@
 package com.eazybytes.accounts.controller;
 
 import com.eazybytes.accounts.constants.AccountsConstants;
+import com.eazybytes.accounts.dto.AccountsDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.exception.ResourceNotFoundException;
 import com.eazybytes.accounts.service.IAccountsService;
@@ -40,14 +41,23 @@ class AccountsControllerTest {
 
     CustomerDto customerDto;
 
+    AccountsDto accountsDto;
+
 
 
     @BeforeEach
     void setUp() {
+        accountsDto = new AccountsDto();
+        accountsDto.setAccountNumber(1234567890L);
+        accountsDto.setAccountType(AccountsConstants.SAVINGS);
+        accountsDto.setBranchAddress("123 Test Street");
+
         customerDto = new CustomerDto();
         customerDto.setName("Test CustomerDTO");
         customerDto.setEmail("test@example.com");
         customerDto.setMobileNumber("1111111111");
+        customerDto.setAccountsDto(accountsDto);
+
     }
 
     @Test
@@ -56,7 +66,8 @@ class AccountsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(customerDto)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.statusMsg").value(AccountsConstants.MESSAGE_201));
+                .andExpect(jsonPath("$.statusMsg").value(AccountsConstants.MESSAGE_201))
+                .andDo(print());
 
         verify(iAccountsSrvMock).createAccount(customerDto);
     }
@@ -64,11 +75,12 @@ class AccountsControllerTest {
     @Test
     void fetchAccountDetails_MobileNr_OK() throws Exception {
         // Given
-        given(iAccountsSrvMock.fetchAccount("1111111111")).willReturn(customerDto);
+        given(iAccountsSrvMock.fetchAccount(customerDto.getMobileNumber())).willReturn(customerDto);
 
         mockMvc.perform(get("/api/fetch")
-                        .param("mobileNumber","1111111111"))
+                        .param("mobileNumber",customerDto.getMobileNumber()))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accountsDto.accountNumber").value(1234567890L))
                 .andDo(print());
     }
     @Test
@@ -110,7 +122,7 @@ class AccountsControllerTest {
     @Test
     void updateAccountDetailsAccountNotFound() throws Exception {
         // Given
-        ResourceNotFoundException resNFE = new ResourceNotFoundException("Account", "AccountNumber","1111111111");
+        ResourceNotFoundException resNFE = new ResourceNotFoundException("Account", "AccountNumber", accountsDto.getAccountNumber().toString());
         doThrow(resNFE).when(iAccountsSrvMock).updateAccount(customerDto);
 
         mockMvc.perform(put("/api/update")
@@ -118,13 +130,14 @@ class AccountsControllerTest {
                         .content(objectMapper.writeValueAsString(customerDto)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.apiPath").value("uri=/api/update"))
-                .andExpect(jsonPath("$.errorMessage").value(containsString("AccountNumber : '1111111111'")))
+                .andExpect(jsonPath("$.errorMessage")
+                        .value(containsString("AccountNumber : '"+accountsDto.getAccountNumber()+"'")))
                 .andDo(print());
     }
     @Test
     void updateAccountDetailsCustomerNotFound() throws Exception {
         // Given
-        ResourceNotFoundException resNFE = new ResourceNotFoundException("Customer", "CustomerID","1111111111");
+        ResourceNotFoundException resNFE = new ResourceNotFoundException("Customer", "CustomerID",customerDto.getMobileNumber());
         doThrow(resNFE).when(iAccountsSrvMock).updateAccount(customerDto);
 
         mockMvc.perform(put("/api/update")
@@ -144,7 +157,8 @@ class AccountsControllerTest {
         mockMvc.perform(delete("/api/delete")
                         .param("mobileNumber", customerDto.getMobileNumber()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("statusMsg").value(AccountsConstants.MESSAGE_200));
+                .andExpect(jsonPath("statusMsg").value(AccountsConstants.MESSAGE_200))
+                .andDo(print());
     }
     @Test
     void deleteAccountDetails_Account_NOT_Exists() throws Exception {
@@ -154,6 +168,7 @@ class AccountsControllerTest {
         mockMvc.perform(delete("/api/delete")
                         .param("mobileNumber", customerDto.getMobileNumber()))
                 .andExpect(status().isExpectationFailed())
-                .andExpect(jsonPath("statusMsg").value(AccountsConstants.MESSAGE_417_DELETE));
+                .andExpect(jsonPath("statusMsg").value(AccountsConstants.MESSAGE_417_DELETE))
+                .andDo(print());
     }
 }
