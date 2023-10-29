@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -47,7 +48,7 @@ class LoansControllerTest {
     }
 
     @Test
-    void createLoan_Mobile_OK() throws Exception {
+    void createLoan_MobileNr_OK() throws Exception {
         mockMvc.perform(post(API_CREATE_URL)
                         .param("mobileNumber",loansDto.getMobileNumber()))
                 .andExpect(status().isCreated())
@@ -56,6 +57,19 @@ class LoansControllerTest {
                 .andDo(print());
 
         verify(iLoansServMock).createLoan(loansDto.getMobileNumber());
+    }
+
+    @Test
+    void createLoan_MobileNr_Not_Valid() throws Exception {
+        // Given
+        loansDto.setMobileNumber("111222333");
+
+        mockMvc.perform(post(API_CREATE_URL)
+                        .param("mobileNumber",loansDto.getMobileNumber()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errorMessage")
+                        .value(containsString("createLoan.mobileNumber")))
+                .andDo(print());
     }
 
     @Test
