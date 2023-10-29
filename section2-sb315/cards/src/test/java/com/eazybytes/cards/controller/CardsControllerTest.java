@@ -96,7 +96,7 @@ class CardsControllerTest {
 
         mockMvc.perform(get("/api/fetch")
                         .param("mobileNumber",cardsDto.getMobileNumber()))
-                .andExpect(status().isInternalServerError())
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errorMessage").value(containsString("fetchCardDetails.mobileNumber")))
                 .andDo(print());
     }

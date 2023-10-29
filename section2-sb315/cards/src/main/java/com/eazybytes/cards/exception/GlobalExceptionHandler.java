@@ -1,6 +1,7 @@
 package com.eazybytes.cards.exception;
 
 import com.eazybytes.cards.dto.ErrorResponseDto;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -33,6 +34,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             validationErrors.put(fieldName, validationMsg);
         });
         return new ResponseEntity<>(validationErrors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex) {
+        List<Map<String,String>> errors = ex.getConstraintViolations().stream()
+                .map(constraintViolation -> {
+                    Map<String, String> errMap = new HashMap<>();
+                    errMap.put(constraintViolation.getPropertyPath().toString(),
+                            constraintViolation.getMessage());
+                    return errMap;
+                }).toList();
+
+        return ResponseEntity.badRequest().body(errors);
     }
 
     @ExceptionHandler(Exception.class)
