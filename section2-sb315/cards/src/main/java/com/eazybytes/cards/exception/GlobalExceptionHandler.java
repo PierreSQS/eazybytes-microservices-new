@@ -37,7 +37,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex) {
+    public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex, WebRequest webRequest) {
         List<Map<String,String>> errors = ex.getConstraintViolations().stream()
                 .map(constraintViolation -> {
                     Map<String, String> errMap = new HashMap<>();
@@ -46,7 +46,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                     return errMap;
                 }).toList();
 
-        return ResponseEntity.badRequest().body(errors);
+        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.BAD_REQUEST,
+                errors.toString(),
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
