@@ -164,10 +164,10 @@ public class AccountsController {
             description = "Get Build infos"
     )
     @GetMapping("build-info")
-    public ResponseEntity<ResponseDto> getBuildInfo() {
+    public ResponseEntity<String> getBuildInfo() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseDto(AccountsConstants.STATUS_200,buildInfo));
+                .body(buildInfo);
     }
 
 

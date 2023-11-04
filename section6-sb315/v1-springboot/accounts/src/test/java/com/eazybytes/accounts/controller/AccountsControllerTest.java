@@ -24,8 +24,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -177,7 +176,7 @@ class AccountsControllerTest {
     void getBuildInfo() throws Exception {
         mockMvc.perform(get("/api/build-info"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.statusMsg",equalTo("1.0")))
+                .andExpect(content().string(equalTo("1.0")))
                 .andDo(print());
     }
 }
