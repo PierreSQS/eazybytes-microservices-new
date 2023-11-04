@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -169,6 +170,14 @@ class AccountsControllerTest {
                         .param("mobileNumber", customerDto.getMobileNumber()))
                 .andExpect(status().isExpectationFailed())
                 .andExpect(jsonPath("statusMsg").value(AccountsConstants.MESSAGE_417_DELETE))
+                .andDo(print());
+    }
+
+    @Test
+    void getBuildInfo() throws Exception {
+        mockMvc.perform(get("api/build-info"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.buildInfo",equalTo("1.0")))
                 .andDo(print());
     }
 }

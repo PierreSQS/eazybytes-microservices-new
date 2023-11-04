@@ -19,3 +19,6 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+
+  build:
+    info: "1.0"
