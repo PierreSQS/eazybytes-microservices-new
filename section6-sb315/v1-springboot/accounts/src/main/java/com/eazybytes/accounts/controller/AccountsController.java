@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,8 @@ import org.springframework.web.bind.annotation.*;
 public class AccountsController {
 
     private final IAccountsService iAccountsService;
+
+    private final Environment environment;
 
     @Value("${build.info}")
     private String buildInfo;
@@ -159,6 +162,10 @@ public class AccountsController {
         }
     }
 
+    @Operation(
+            summary = "Get Build information",
+            description = "Get Build information that is deployed into accounts microservice"
+    )
     @ApiResponse(
             responseCode = "200",
             description = "Get Build infos"
@@ -168,6 +175,21 @@ public class AccountsController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(buildInfo);
+    }
+
+    @Operation(
+            summary = "Get HomePath Location",
+            description = "Get HomePath of the environment where accounts microservice is deployed"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Get HomePath infos"
+    )
+    @GetMapping("homepath")
+    public ResponseEntity<String> getHomePath() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(environment.getProperty("HOMEPATH"));
     }
 
 

@@ -160,6 +160,7 @@ class AccountsControllerTest {
                 .andExpect(jsonPath("statusMsg").value(AccountsConstants.MESSAGE_200))
                 .andDo(print());
     }
+
     @Test
     void deleteAccountDetails_Account_NOT_Exists() throws Exception {
         // Given
@@ -177,6 +178,14 @@ class AccountsControllerTest {
         mockMvc.perform(get("/api/build-info"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("1.0")))
+                .andDo(print());
+    }
+
+    @Test
+    void getHomePath() throws Exception {
+        mockMvc.perform(get("/api/homepath"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(equalTo("\\Users\\messina")))
                 .andDo(print());
     }
 }
