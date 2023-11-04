@@ -177,7 +177,7 @@ class AccountsControllerTest {
     void getBuildInfo() throws Exception {
         mockMvc.perform(get("/api/build-info"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.buildInfo",equalTo("1.0")))
+                .andExpect(jsonPath("$.statusMsg",equalTo("1.0")))
                 .andDo(print());
     }
 }
