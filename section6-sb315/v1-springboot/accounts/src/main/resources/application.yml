@@ -20,5 +20,5 @@ spring:
     ansi:
       enabled: ALWAYS
 
-  build:
-    info: "1.0"
+build:
+  info: "1.0"
