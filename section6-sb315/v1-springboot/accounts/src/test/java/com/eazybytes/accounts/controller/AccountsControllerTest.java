@@ -20,8 +20,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -186,6 +185,16 @@ class AccountsControllerTest {
         mockMvc.perform(get("/api/homepath"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("\\Users\\messina")))
+                .andDo(print());
+    }
+
+    @Test
+    void getContactInfos() throws Exception {
+        mockMvc.perform(get("/api/contact-info"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(containsString("EazyBank")))
+                .andExpect(jsonPath("$.contactDetails.name",containsString("John Doe")))
+                .andExpect(jsonPath("$.onCallSupport[0]", equalTo("(555) 555-1234")))
                 .andDo(print());
     }
 }
