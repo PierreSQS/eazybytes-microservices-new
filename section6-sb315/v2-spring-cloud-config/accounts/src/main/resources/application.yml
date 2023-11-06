@@ -15,13 +15,17 @@ spring:
       ddl-auto: update
     show-sql: true
 
+  # CONFIG SERVER CONNECT
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
   # ENABLE COLOR ON TERMINAL ENTRIES
   output:
     ansi:
       enabled: ALWAYS
 
 build:
-  info: "3.0"
+  version: "3.0"
 
 accounts:
   message: "Welcome to EazyBank accounts related local APIs "
