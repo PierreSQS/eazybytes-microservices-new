@@ -18,13 +18,13 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  # CONFIG SERVER CONNECT
   config:
     import: "optional:configserver:http://localhost:8071/"
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: "guest"
-    password: "guest"
+
+build:
+  Version: 1.0
 
 management:
   endpoints:
