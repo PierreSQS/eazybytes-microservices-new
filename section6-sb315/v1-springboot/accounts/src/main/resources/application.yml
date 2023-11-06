@@ -21,7 +21,7 @@ spring:
       enabled: ALWAYS
 
 build:
-  info: "1.0"
+  info: "3.0"
 
 accounts:
   message: "Welcome to EazyBank accounts related local APIs "

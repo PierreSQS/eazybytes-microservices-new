@@ -176,7 +176,7 @@ class AccountsControllerTest {
     void getBuildInfo() throws Exception {
         mockMvc.perform(get("/api/build-info"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("1.0")))
+                .andExpect(content().string(equalTo("3.0")))
                 .andDo(print());
     }
 
