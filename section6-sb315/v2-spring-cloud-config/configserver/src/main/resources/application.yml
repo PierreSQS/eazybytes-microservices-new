@@ -5,12 +5,6 @@ spring:
   # FOR ACTIVATING CLASSPATH STORAGE OF CONFIG FILES
   profiles:
     active: native
-  # LOCATION OF THE µSERVICES CONFIGS
-  cloud:
-    config:
-      server:
-        native:
-          search-location: "classpath/config"
 
 server:
   port: 8071
