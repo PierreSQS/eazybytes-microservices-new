@@ -58,7 +58,7 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<!-- prevents CVE issue -->
+		<!-- PREVENTS CVE ISSUE -->
 		<dependency>
 			<groupId>org.yaml</groupId>
 			<artifactId>snakeyaml</artifactId>
@@ -93,6 +93,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
@@ -100,7 +108,7 @@
 				<version>3.4.0</version>
 				<configuration>
 					<to>
-						<image>pierrotadesso/${project.artifactId}:s4</image>
+						<image>pierrotadesso/${project.artifactId}:s6</image>
 					</to>
 				</configuration>
 			</plugin>
