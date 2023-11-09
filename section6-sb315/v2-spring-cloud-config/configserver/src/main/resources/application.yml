@@ -6,5 +6,17 @@ spring:
   profiles:
     active: native
 
+  # Fix of commit f8d2ccc2 at line 14
+  # LOCATION OF THE µSERVICES CONFIGS
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations: "classpath:/config/"
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
 server:
   port: 8071
