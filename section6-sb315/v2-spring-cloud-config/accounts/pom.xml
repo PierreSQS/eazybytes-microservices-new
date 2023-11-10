@@ -34,6 +34,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!-- CONNECTION TO THE CONFIG SERVER -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
@@ -76,6 +77,7 @@
 		</dependency>
 	</dependencies>
 
+	<!-- CONNECTION TO THE CONFIG SERVER -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -102,6 +104,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<!-- PLUGIN TO CREATE THE DOCKER IMAGE -->
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
