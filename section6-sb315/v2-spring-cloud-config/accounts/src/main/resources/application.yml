@@ -8,7 +8,7 @@ spring:
 
   # ACTIVATE DEFAULT PROFILE
   profiles:
-    activate: "prod"
+    active: "prod"
 
   datasource:
     url: jdbc:h2:mem:testdb
