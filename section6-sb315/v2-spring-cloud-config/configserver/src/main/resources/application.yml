@@ -24,6 +24,15 @@ spring:
     ansi:
       enabled: ALWAYS
 
+# ENABLING ACTUATORS PATH LIKE REFRESH PATH
+# TO READ CHANGED PROPERTIES AT RUNTIME
+# WITHOUT RESTARTING THE µSERVICES
+management:
+  endpoints:
+    web:
+      exposure:
+        includes: "*"
+
 # FOR ENCRYPTING accounts.contactDetails.email"
 encrypt:
   key: "45D81EC1EF61DF9AD8D3E5BB397F9"

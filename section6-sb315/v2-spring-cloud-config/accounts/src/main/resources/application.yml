@@ -32,3 +32,13 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+
+# ENABLING ACTUATORS PATH LIKE REFRESH PATH
+# TO READ CHANGED PROPERTIES AT RUNTIME
+# WITHOUT RESTARTING THE µSERVICES
+management:
+  endpoints:
+    web:
+      exposure:
+        includes: "*"
+
