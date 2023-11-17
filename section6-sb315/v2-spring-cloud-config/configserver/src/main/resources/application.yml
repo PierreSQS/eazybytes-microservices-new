@@ -20,6 +20,13 @@ spring:
           clone-on-start: true
           force-pull: true
 
+  # CONNECTION TO RabbitMQ OPTIONAL SINCE DEFAULT IN SPRING CLOUD BUS
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+
   output:
     ansi:
       enabled: ALWAYS
