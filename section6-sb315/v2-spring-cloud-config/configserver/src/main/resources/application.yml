@@ -14,7 +14,8 @@ spring:
         #native:
         #  searchLocations: "classpath:/config/"
         git:
-          uri: "https://github.com/eazybytes/eazybytes-config.git"
+          #uri: "https://github.com/eazybytes/eazybytes-config.git"
+          uri: "https://github.com/PierreSQS/eazybytes-config.git"
           default-label: main
           timeout: 5
           clone-on-start: true
