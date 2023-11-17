@@ -31,7 +31,7 @@ management:
   endpoints:
     web:
       exposure:
-        includes: "*"
+        include: "*"
 
 # FOR ENCRYPTING accounts.contactDetails.email"
 encrypt:
