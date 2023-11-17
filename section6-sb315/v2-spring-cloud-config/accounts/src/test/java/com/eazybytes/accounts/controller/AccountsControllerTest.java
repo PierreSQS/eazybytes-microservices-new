@@ -176,7 +176,7 @@ class AccountsControllerTest {
     void getBuildInfo() throws Exception {
         mockMvc.perform(get("/api/build-info"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("3.0")))
+                .andExpect(content().string(equalTo("1.0")))
                 .andDo(print());
     }
 
@@ -193,8 +193,8 @@ class AccountsControllerTest {
         mockMvc.perform(get("/api/contact-info"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(containsString("EazyBank")))
-                .andExpect(jsonPath("$.contactDetails.name",containsString("John Doe")))
-                .andExpect(jsonPath("$.onCallSupport[0]", equalTo("(555) 555-1234")))
+                .andExpect(jsonPath("$.contactDetails.name",containsString("Reine Aishwarya")))
+                .andExpect(jsonPath("$.onCallSupport[0]", equalTo("(453) 392-4829")))
                 .andDo(print());
     }
 }
