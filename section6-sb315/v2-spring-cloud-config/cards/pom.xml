@@ -42,6 +42,23 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
+
+	<!-- LINKS NODES OF A DISTRIBUTED SYSTEM WITH A LIGHTWEIGHT MESSAGE BROKER
+	     WHICH CAN USED TO BROADCAST STATE CHANGES OR OTHER MANAGEMENT INSTRUCTIONS
+	     (requires a binder, e.g. Apache Kafka or RabbitMQ). -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-bus</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -75,9 +92,16 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- RabbitMQ TEST RELATED STUFF -->
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
-	<!-- CONNECTION TO THE CONFIG SERVER -->
+	<!-- SPRING CLOUD RELATED DEPENDENCY MGMT -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
