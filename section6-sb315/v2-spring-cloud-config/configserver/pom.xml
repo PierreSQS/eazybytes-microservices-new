@@ -43,6 +43,13 @@
 			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
 		</dependency>
 
+		<!-- ENABLES THE MONITOR URL PATH FOR PUSH NOTIFICATIONS WHEN
+		     GIT WEBHOOK ACTIVATED-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-monitor</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
