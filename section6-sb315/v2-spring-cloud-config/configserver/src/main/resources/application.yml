@@ -13,6 +13,7 @@ spring:
       server:
         #native:
         #  searchLocations: "classpath:/config/"
+        #  searchLocations: "file:///Users//eazybytes//Documents//config"
         git:
           #uri: "https://github.com/eazybytes/eazybytes-config.git"
           uri: "https://github.com/PierreSQS/eazybytes-config.git"
@@ -40,6 +41,18 @@ management:
     web:
       exposure:
         include: "*"
+  # LIVENESS AND READINESS otherwise
+  # HEALTHCHECK WILL NOT WORK
+  # (See docker-compose file in docker-compose folder)
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
 
 # FOR ENCRYPTING accounts.contactDetails.email"
 encrypt:

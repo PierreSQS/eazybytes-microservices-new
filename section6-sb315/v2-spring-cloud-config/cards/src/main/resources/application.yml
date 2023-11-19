@@ -26,10 +26,6 @@ spring:
       ddl-auto: update
     show-sql: true
 
-  # CONFIG SERVER CONNECT
-  config:
-    import: "optional:configserver:http://localhost:8071/"
-
   # CONNECTION TO RabbitMQ OPTIONAL SINCE DEFAULT IN SPRING CLOUD BUS
   rabbitmq:
     host: "localhost"

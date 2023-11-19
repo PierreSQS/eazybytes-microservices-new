@@ -24,10 +24,6 @@ spring:
       ddl-auto: update
     show-sql: true
 
-  # CONNECT TO CONFIG SERVER
-  config:
-    import: "optional:configserver:http://localhost:8071"
-
   # CONNECTION TO RabbitMQ OPTIONAL SINCE DEFAULT IN SPRING CLOUD BUS
   rabbitmq:
     host: "localhost"
@@ -41,7 +37,8 @@ spring:
       enabled: ALWAYS
 
 # ENABLING ACTUATORS PATH LIKE REFRESH PATH
-# TO READ CHANGED PROPERTIES AT RUNTIME
+# TO READ CHANGED PROPERTIES AT RUNTIME WITHOUT
+# RESTARTING THE �SERVICES
 management:
   endpoints:
     web:
