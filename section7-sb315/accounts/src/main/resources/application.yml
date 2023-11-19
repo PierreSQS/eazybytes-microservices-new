@@ -1,0 +1,47 @@
+server:
+  port: 8080
+spring:
+  application:
+    # SAME NAME AS THE PROFILE PROPERTIES FILE
+    # IN THE CONFIG SERVER
+    name: "accounts"
+
+  # ACTIVATE DEFAULT PROFILE
+  profiles:
+    active: "prod"
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  # CONNECTION TO RabbitMQ OPTIONAL SINCE DEFAULT IN SPRING CLOUD BUS
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+
+  # ENABLE COLOR ON TERMINAL ENTRIES
+  output:
+    ansi:
+      enabled: ALWAYS
+
+# ENABLING ACTUATORS PATH LIKE REFRESH PATH
+# TO READ CHANGED PROPERTIES AT RUNTIME WITHOUT
+# RESTARTING THE �SERVICES
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
