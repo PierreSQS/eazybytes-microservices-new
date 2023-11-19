@@ -15,7 +15,7 @@
 	<!-- NOT NECESSARY -->
 	<packaging>jar</packaging>
 	<name>cards</name>
-	<description>Microservice for Cards</description>
+	<description>Pierrot Sect7 - Microservice for Cards</description>
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.4</spring-cloud.version>
@@ -41,22 +41,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
-
-	<!-- LINKS NODES OF A DISTRIBUTED SYSTEM WITH A LIGHTWEIGHT MESSAGE BROKER
-	     WHICH CAN USED TO BROADCAST STATE CHANGES OR OTHER MANAGEMENT INSTRUCTIONS
-	     (requires a binder, e.g. Apache Kafka or RabbitMQ). -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-amqp</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-bus</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
 		</dependency>
 
 		<dependency>
@@ -93,12 +77,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- RabbitMQ TEST RELATED STUFF -->
-		<dependency>
-			<groupId>org.springframework.amqp</groupId>
-			<artifactId>spring-rabbit-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<!-- SPRING CLOUD RELATED DEPENDENCY MGMT -->
