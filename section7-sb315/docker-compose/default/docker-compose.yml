@@ -35,6 +35,24 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
+  cardsdb:
+    image: mysql:8.0.35
+    container_name: cardsdb
+    ports:
+      - "3309:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    environment:
+      MYSQL_ROOT_PASSWORD: Galerien3?
+      MYSQL_DATABASE: cardsdb
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   configserver:
     image: "pierrotadesso/configserver:s7"
     container_name: configserver-ms
