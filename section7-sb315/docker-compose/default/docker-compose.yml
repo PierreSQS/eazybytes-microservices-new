@@ -78,6 +78,9 @@ services:
       - "8080:8080"
     environment:
       SPRING_APPLICATION_NAME: "accounts"
+      # THE PORT IS THE INTERNAL DOCKER PORT
+      # SINCE THE SAME NETWORK
+      SPRING_DATASOURCE_URL: jdbc:mysql://accountsdb:3306/accountsdb
     extends:
       file: common-config.yml
       service: microservice-configserver-config
@@ -89,6 +92,9 @@ services:
       - "8090:8090"
     environment:
       SPRING_APPLICATION_NAME: "loans"
+      # THE PORT IS THE INTERNAL DOCKER PORT
+      # SINCE THE SAME NETWORK
+      SPRING_DATASOURCE_URL: jdbc:mysql://loansdb:3306/loansdb
     extends:
       file: common-config.yml
       service: microservice-configserver-config
@@ -100,6 +106,9 @@ services:
       - "9000:9000"
     environment:
       SPRING_APPLICATION_NAME: "cards"
+      # THE PORT IS THE INTERNAL DOCKER PORT
+      # SINCE THE SAME NETWORK
+      SPRING_DATASOURCE_URL: jdbc:mysql://cardsdb:3306/cardsdb
     extends:
       file: common-config.yml
       service: microservice-configserver-config
