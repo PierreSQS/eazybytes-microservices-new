@@ -78,6 +78,9 @@ services:
       # THE PORT IS THE INTERNAL DOCKER PORT
       # SINCE THE SAME NETWORK
       SPRING_DATASOURCE_URL: jdbc:mysql://accountsdb:3306/accountsdb
+    depends_on:
+      accountsdb:
+        condition: service_healthy
     extends:
       file: common-config.yml
       service: microservice-configserver-config
@@ -92,6 +95,9 @@ services:
       # THE PORT IS THE INTERNAL DOCKER PORT
       # SINCE THE SAME NETWORK
       SPRING_DATASOURCE_URL: jdbc:mysql://loansdb:3306/loansdb
+    depends_on:
+      loansdb:
+        condition: service_healthy
     extends:
       file: common-config.yml
       service: microservice-configserver-config
@@ -106,6 +112,9 @@ services:
       # THE PORT IS THE INTERNAL DOCKER PORT
       # SINCE THE SAME NETWORK
       SPRING_DATASOURCE_URL: jdbc:mysql://cardsdb:3306/cardsdb
+    depends_on:
+      cardsdb:
+        condition: service_healthy
     extends:
       file: common-config.yml
       service: microservice-configserver-config
