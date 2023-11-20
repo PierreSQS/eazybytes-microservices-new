@@ -4,7 +4,7 @@ services:
       - eazybank
 
   microservice-db-config:
-    image: mysql:8.0.35
+    image: mysql:8.2.0
     extends:
       service: network-deploy-service
     healthcheck:
