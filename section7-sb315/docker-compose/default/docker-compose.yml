@@ -1,22 +1,24 @@
 services:
-  rabbit:
-    image: rabbitmq:3.12-management
-    hostname: rabbitmq
+  accountsdb:
+    image: mysql:8.0.35
+    container_name: accountsdb
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "3307:3306"
     healthcheck:
-      test: rabbitmq-diagnostics check_port_connectivity
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 5s
+    environment:
+      MYSQL_ROOT_PASSWORD: Galerien3?
+      MYSQL_DATABASE: accountsdb
     extends:
       file: common-config.yml
       service: network-deploy-service
 
   configserver:
-    image: "pierrotadesso/configserver:s6"
+    image: "pierrotadesso/configserver:s7"
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -34,7 +36,7 @@ services:
       service: microservice-base-config
 
   accounts:
-    image: "pierrotadesso/accounts:s6"
+    image: "pierrotadesso/accounts:s7"
     container_name: accounts-ms
     ports:
       - "8080:8080"
@@ -45,7 +47,7 @@ services:
       service: microservice-configserver-config
 
   loans:
-    image: "pierrotadesso/loans:s6"
+    image: "pierrotadesso/loans:s7"
     container_name: loans-ms
     ports:
       - "8090:8090"
@@ -56,7 +58,7 @@ services:
       service: microservice-configserver-config
 
   cards:
-    image: "pierrotadesso/cards:s6"
+    image: "pierrotadesso/cards:s7"
     container_name: cards-ms
     ports:
       - "9000:9000"
