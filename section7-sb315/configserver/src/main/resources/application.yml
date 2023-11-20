@@ -22,10 +22,6 @@ spring:
           clone-on-start: true
           force-pull: true
 
-  # CONFIG SERVER CONNECT
-  config:
-    import: "optional:configserver:http://localhost:8071/"
-
   output:
     ansi:
       enabled: ALWAYS

@@ -3,6 +3,19 @@ services:
     networks:
       - eazybank
 
+  microservice-db-config:
+    image: mysql:8.0.35
+    extends:
+      service: network-deploy-service
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    environment:
+      MYSQL_ROOT_PASSWORD: Galerien3?
+
   microservice-base-config:
     extends:
       service: network-deploy-service
