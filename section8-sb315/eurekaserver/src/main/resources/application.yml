@@ -1,1 +1,40 @@
+# FOR CONFIG SERVER
+spring:
+  application:
+    # SAME NAME AS THE PROFILE PROPERTIES FILE
+    # IN THE CONFIG SERVER (e.g. eureka.yml)
+    name: "eurekaserver"
 
+  # CONNECTION TO CONFIGSERVER
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+  # ENABLE COLOR ON TERMINAL ENTRIES
+  output:
+    ansi:
+      enabled: ALWAYS
+
+# ENABLING ACTUATORS PATH LIKE REFRESH PATH
+# TO READ CHANGED PROPERTIES AT RUNTIME
+# WITHOUT RESTARTING THE µSERVICES
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  # LIVENESS AND READINESS otherwise
+  # HEALTHCHECK WILL NOT WORK
+  # (See docker-compose file in docker-compose folder)
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+# DEFAULT SETTING
+server:
+  port: 8070
