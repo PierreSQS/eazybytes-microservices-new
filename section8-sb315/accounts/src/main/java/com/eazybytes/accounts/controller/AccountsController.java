@@ -190,8 +190,8 @@ public class AccountsController {
     }
 
     @Operation(
-            summary = "Get HomePath Location",
-            description = "Get HomePath of the environment where accounts microservice is deployed"
+            summary = "Get Java version",
+            description = "Get Java versions details that is installed into cards microservice"
     )
     @ApiResponse(
             responseCode = "200",
@@ -204,11 +204,11 @@ public class AccountsController {
                     schema = @Schema(implementation = ErrorResponseDto.class)
             )
     )
-    @GetMapping("homepath")
-    public ResponseEntity<String> getHomePath() {
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(environment.getProperty("HOMEPATH"));
+                .body(environment.getProperty("JAVA_HOME"));
     }
 
     @Operation(

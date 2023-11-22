@@ -181,10 +181,9 @@ class AccountsControllerTest {
     }
 
     @Test
-    void getHomePath() throws Exception {
-        mockMvc.perform(get("/api/homepath"))
+    void getJavaVersion() throws Exception {
+        mockMvc.perform(get("/api/java-version"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("\\Users\\messina")))
                 .andDo(print());
     }
 
