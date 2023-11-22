@@ -58,6 +58,7 @@ class LoansControllerTest {
 
     @Test
     void createLoan_MobileNr_OK() throws Exception {
+        // WHEN AND THEN
         mockMvc.perform(post(API_CREATE_URL)
                         .param("mobileNumber",loansDto.getMobileNumber()))
                 .andExpect(status().isCreated())
@@ -73,6 +74,7 @@ class LoansControllerTest {
         // Given
         loansDto.setMobileNumber("111222333");
 
+        // WHEN AND THEN
         mockMvc.perform(post(API_CREATE_URL)
                         .param("mobileNumber",loansDto.getMobileNumber()))
                 .andExpect(status().isBadRequest())
@@ -86,6 +88,7 @@ class LoansControllerTest {
         // Given
         given(iLoansServMock.fetchLoan(anyString())).willReturn(loansDto);
 
+        // WHEN AND THEN
         mockMvc.perform(get("/api/fetch")
                         .param("mobileNumber",loansDto.getMobileNumber()))
                 .andExpect(status().isOk())
@@ -101,6 +104,7 @@ class LoansControllerTest {
                 loansDto.getMobileNumber());
         doThrow(rnfe).when(iLoansServMock).fetchLoan(loansDto.getMobileNumber());
 
+        // WHEN AND THEN
         mockMvc.perform(get("/api/fetch")
                         .param("mobileNumber",loansDto.getMobileNumber()))
                 .andExpect(status().isNotFound())
@@ -111,8 +115,9 @@ class LoansControllerTest {
 
     @Test
     void updateLoanDetails_Updated() throws Exception {
-        // Given
+        // GIVEN
         given(iLoansServMock.updateLoan(any(LoansDto.class))).willReturn(Boolean.TRUE);
+        // WHEN AND THEN
         mockMvc.perform(put(UPDATE_API_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loansDto)))
@@ -123,11 +128,12 @@ class LoansControllerTest {
 
     @Test
     void updateLoanDetails_InvalidBody() throws Exception {
-        // Given
+        // GIVEN
         ConstraintViolationException cvex =
                 new ConstraintViolationException("updateLoanDetails.mobileNumber",new HashSet<>());
         doThrow(cvex).when(iLoansServMock).updateLoan(loansDto);
 
+        // WHEN AND THEN
         mockMvc.perform(put(UPDATE_API_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loansDto)))
@@ -137,8 +143,9 @@ class LoansControllerTest {
 
     @Test
     void updateLoanDetails_NotFound() throws Exception {
-        // Given
+        // GIVEN
         given(iLoansServMock.updateLoan(any(LoansDto.class))).willReturn(Boolean.FALSE);
+        // WHEN AND THEN
         mockMvc.perform(put(UPDATE_API_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loansDto)))
@@ -148,6 +155,28 @@ class LoansControllerTest {
     }
 
     @Test
-    void deleteLoanDetails() {
+    void deleteLoanDetails_IsDeleted() throws Exception {
+        // GIVEN
+        given(iLoansServMock.deleteLoan(anyString())).willReturn(Boolean.TRUE);
+
+        // WHEN AND THEN
+        mockMvc.perform((delete("/api/delete"))
+                        .param("mobileNumber", loansDto.getMobileNumber()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusMsg").value(LoansConstants.MESSAGE_200))
+                .andDo(print());
+    }
+
+    @Test
+    void deleteLoanDetails_IsNotDeleted() throws Exception {
+        // Given
+        given(iLoansServMock.deleteLoan(anyString())).willReturn(Boolean.FALSE);
+
+        // When and Then
+        mockMvc.perform((delete("/api/delete"))
+                        .param("mobileNumber", loansDto.getMobileNumber()))
+                .andExpect(status().isExpectationFailed())
+                .andExpect(jsonPath("$.statusMsg").value(LoansConstants.MESSAGE_417_DELETE))
+                .andDo(print());
     }
 }
