@@ -12,7 +12,7 @@
 	<artifactId>eurekaserver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>eurekaserver</name>
-	<description>Pierrot Sect8 Service Discovery agent for EazyBank µServices</description>
+	<description>Pierrot Sect8 - Service Discovery agent for EazyBank µServices</description>
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.4</spring-cloud.version>
@@ -22,13 +22,24 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+
+		<!-- CONNECTION TO THE CONFIG SERVER -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
+
+		<!-- SETS THE APP AS A SPRING CLOUD EUREKA SERVER -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+		</dependency>
+
+		<!-- PREVENTS CVE ISSUE -->
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>2.0</version>
 		</dependency>
 
 		<dependency>
@@ -37,6 +48,8 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<!-- SPRING CLOUD RELATED DEPENDENCY MGMT -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -54,10 +67,15 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.0</version>
 				<configuration>
-					<image>
-						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
-					</image>
+					<to>
+						<image>pierrotadesso/${project.artifactId}:s8</image>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>
