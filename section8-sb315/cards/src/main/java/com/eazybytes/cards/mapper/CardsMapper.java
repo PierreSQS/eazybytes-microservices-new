@@ -5,6 +5,9 @@ import com.eazybytes.cards.entity.Cards;
 
 public class CardsMapper {
 
+    private CardsMapper() {
+    }
+
     public static CardsDto mapToCardsDto(Cards cards, CardsDto cardsDto) {
         cardsDto.setCardNumber(cards.getCardNumber());
         cardsDto.setCardType(cards.getCardType());

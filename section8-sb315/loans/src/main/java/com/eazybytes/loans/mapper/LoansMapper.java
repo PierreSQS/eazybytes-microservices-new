@@ -5,6 +5,9 @@ import com.eazybytes.loans.entity.Loans;
 
 public class LoansMapper {
 
+    private LoansMapper() {
+    }
+
     public static LoansDto mapToLoansDto(Loans loans, LoansDto loansDto) {
         loansDto.setLoanNumber(loans.getLoanNumber());
         loansDto.setLoanType(loans.getLoanType());
