@@ -3,7 +3,8 @@ server:
 spring:
   application:
     # SAME NAME AS THE PROFILE PROPERTIES FILE
-    # IN THE CONFIG SERVER
+    # IN THE GIT REP OR CONFIG SERVER (e.g. accounts*.yml)
+    # (See Git Repo https://github.com/PierreSQS/eazybytes-config)
     name: "accounts"
 
   # ACTIVATE DEFAULT PROFILE
@@ -35,7 +36,7 @@ spring:
 
 # ENABLING ACTUATORS PATH LIKE REFRESH PATH
 # TO READ CHANGED PROPERTIES AT RUNTIME WITHOUT
-# RESTARTING THE �SERVICES
+# RESTARTING THE µSERVICES
 management:
   endpoints:
     web:

@@ -2,7 +2,8 @@
 spring:
   application:
     # SAME NAME AS THE PROFILE PROPERTIES FILE
-    # IN THE CONFIG SERVER (e.g. eureka.yml)
+    # IN THE GIT REP OR CONFIG SERVER (e.g. eureka.yml)
+    # (See Git Repo https://github.com/PierreSQS/eazybytes-config)
     name: "eurekaserver"
 
   # CONNECTION TO CONFIGSERVER
