@@ -1,6 +1,5 @@
 server:
   port: 8090
-
 # FOR CONFIG SERVER
 spring:
   application:
@@ -44,3 +43,35 @@ management:
     web:
       exposure:
         include: "*"
+
+  # ENABLE SHUTDOWN ENDPOINT URL
+  endpoint:
+    shutdown:
+      enabled: true
+  # ENABLE INFO RELATED URL
+  info:
+    env:
+      enabled: true
+
+# EXPOSE THE SHUTDOWN REST APIS
+endpoints:
+  shutdown:
+    enabled: true
+
+# CONNECTION TO EUREKA SERVER
+eureka:
+  instance:
+    # SINCE NO DNS, PREFER IpAddress
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+# APP INFOS FOR THE ACTUATOR
+info:
+  app:
+    name: "Loans"
+    description: "EazyBank Loans Application"
+    version: "1.0.0"
