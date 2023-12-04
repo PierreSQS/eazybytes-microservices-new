@@ -11,7 +11,8 @@ services:
         limits:
           memory: 700m
     environment:
-      SPRING_RABBITMQ_HOST: "rabbit"
+      # SAME AS THE CONFIG FILE NAME IN THE CONFIG SERVER
+      SPRING_APPLICATION_NAME: "eurekaserver"
 
   microservice-configserver-config:
     extends:
@@ -22,3 +23,5 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: qa
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+

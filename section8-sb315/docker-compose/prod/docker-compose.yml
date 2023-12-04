@@ -1,22 +1,6 @@
 services:
-  rabbit:
-    image: rabbitmq:3.12-management
-    hostname: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    healthcheck:
-      test: rabbitmq-diagnostics check_port_connectivity
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 5s
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
-
   configserver:
-    image: "pierrotadesso/configserver:s6"
+    image: "pierrotadesso/configserver:s8"
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -32,9 +16,30 @@ services:
     extends:
       file: common-config.yml
       service: microservice-base-config
+    environment:
+      # SAME AS THE CONFIG FILE NAME IN THE CONFIG SERVER
+      SPRING_APPLICATION_NAME: "eurekaserver"
+
+  eurekaserver:
+    image: "pierrotadesso/eurekaserver:s8"
+    container_name: eurekaserver-ms
+    ports:
+      - "8070:8070"
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
 
   accounts:
-    image: "pierrotadesso/accounts:s6"
+    image: "pierrotadesso/accounts:s8"
     container_name: accounts-ms
     ports:
       - "8080:8080"
@@ -45,7 +50,7 @@ services:
       service: microservice-configserver-config
 
   loans:
-    image: "pierrotadesso/loans:s6"
+    image: "pierrotadesso/loans:s8"
     container_name: loans-ms
     ports:
       - "8090:8090"
@@ -56,7 +61,7 @@ services:
       service: microservice-configserver-config
 
   cards:
-    image: "pierrotadesso/cards:s6"
+    image: "pierrotadesso/cards:s8"
     container_name: cards-ms
     ports:
       - "9000:9000"
