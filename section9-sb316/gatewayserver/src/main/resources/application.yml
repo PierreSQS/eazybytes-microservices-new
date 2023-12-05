@@ -9,6 +9,14 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8071/"
 
+  # CONFIGURE THE GATEWAY TO CREATE ROUTES BASED
+  # ON SERVICES REGISTERED WITH A DISCOVERY CLIENT
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
   # ENABLE COLOR ON TERMINAL ENTRIES
   output:
     ansi:
