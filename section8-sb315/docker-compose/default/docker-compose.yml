@@ -34,6 +34,8 @@ services:
     environment:
       # SAME AS THE CONFIG FILE NAME IN THE CONFIG SERVER
       SPRING_APPLICATION_NAME: "eurekaserver"
+      # CONNECTION TO THE CONFIG SERVER
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
 
 
   accounts:
