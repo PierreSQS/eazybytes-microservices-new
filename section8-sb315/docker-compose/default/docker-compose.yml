@@ -25,18 +25,12 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
-    depends_on:
-      configserver:
-        condition: service_healthy
     extends:
       file: common-config.yml
-      service: microservice-base-config
+      service: microservice-configserver-config
     environment:
       # SAME AS THE CONFIG FILE NAME IN THE CONFIG SERVER
       SPRING_APPLICATION_NAME: "eurekaserver"
-      # CONNECTION TO THE CONFIG SERVER
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
-
 
   accounts:
     image: "pierrotadesso/accounts:s8"
@@ -47,7 +41,7 @@ services:
       SPRING_APPLICATION_NAME: "accounts"
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eurekaserver-config
 
   loans:
     image: "pierrotadesso/loans:s8"
@@ -58,7 +52,7 @@ services:
       SPRING_APPLICATION_NAME: "loans"
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eurekaserver-config
 
   cards:
     image: "pierrotadesso/cards:s8"
@@ -69,7 +63,7 @@ services:
       SPRING_APPLICATION_NAME: "cards"
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eurekaserver-config
 
 networks:
   eazybank:
