@@ -25,9 +25,15 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
+    depends_on:
+      configserver:
+        condition: service_healthy
     extends:
       file: common-config.yml
       service: microservice-base-config
+    environment:
+      # SAME AS THE CONFIG FILE NAME IN THE CONFIG SERVER
+      SPRING_APPLICATION_NAME: "eurekaserver"
 
 
   accounts:

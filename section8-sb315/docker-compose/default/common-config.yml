@@ -10,9 +10,6 @@ services:
       resources:
         limits:
           memory: 700m
-    environment:
-      # SAME AS THE CONFIG FILE NAME IN THE CONFIG SERVER
-      SPRING_APPLICATION_NAME: "eurekaserver"
 
   microservice-configserver-config:
     extends:
