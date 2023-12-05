@@ -1,1 +1,45 @@
+spring:
+  application:
+    # SAME NAME AS THE PROFILE PROPERTIES FILE
+    # IN THE GIT REP OR CONFIG SERVER (e.g. gatewayserver.yml)
+    # (See Git Repo https://github.com/PierreSQS/eazybytes-config)
+    name: "gatewayserver"
 
+  # CONNECTION TO CONFIGSERVER
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+  # ENABLE COLOR ON TERMINAL ENTRIES
+  output:
+    ansi:
+      enabled: ALWAYS
+
+# ENABLING ACTUATORS PATH LIKE REFRESH PATH
+# TO READ CHANGED PROPERTIES AT RUNTIME WITHOUT
+# RESTARTING THE µSERVICES
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  # ENABLE SHUTDOWN ENDPOINT URL
+  endpoint:
+    shutdown:
+      enabled: true
+  # ENABLE INFO RELATED URL
+  info:
+    env:
+      enabled: true
+
+# EXPOSE THE SHUTDOWN REST APIS
+endpoints:
+  shutdown:
+    enabled: true
+
+# APP INFOS FOR THE ACTUATOR
+info:
+  app:
+    name: "gatewayserver"
+    description: "EazyBank Gateway Server Application"
+    version: "1.0.0"
