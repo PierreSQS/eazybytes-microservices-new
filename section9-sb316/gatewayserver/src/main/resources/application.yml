@@ -26,26 +26,24 @@ spring:
 
 # ENABLING ACTUATORS PATH LIKE REFRESH PATH
 # TO READ CHANGED PROPERTIES AT RUNTIME WITHOUT
-# RESTARTING THE µSERVICES
+# RESTARTING THE ï¿½SERVICES
 management:
   endpoints:
     web:
       exposure:
         include: "*"
 
-  # ENABLE SHUTDOWN ENDPOINT URL
+  # ENABLE ACTUATOR GATEWAY ENDPOINT
+  # should be default according to SB DOC
+  # (See https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#actuator-api)
   endpoint:
-    shutdown:
+    gateway:
       enabled: true
+
   # ENABLE INFO RELATED URL
   info:
     env:
       enabled: true
-
-# EXPOSE THE SHUTDOWN REST APIS
-endpoints:
-  shutdown:
-    enabled: true
 
 # APP INFOS FOR THE ACTUATOR
 info:
