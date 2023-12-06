@@ -15,7 +15,7 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
+          # enabled: true // disabled default routing
           # OPTION TO LOWER CASE SERVICE ID IN PREDICATES
           lower-case-service-id: true
 
