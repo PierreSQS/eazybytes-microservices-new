@@ -16,6 +16,8 @@ spring:
       discovery:
         locator:
           enabled: true
+          # OPTION TO LOWER CASE SERVICE ID IN PREDICATES
+          lower-case-service-id: true
 
   # ENABLE COLOR ON TERMINAL ENTRIES
   output:
