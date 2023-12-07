@@ -51,3 +51,10 @@ info:
     name: "gatewayserver"
     description: "EazyBank Gateway Server Application"
     version: "1.0.0"
+
+# GATEWAYSERVER LOGGING
+logging:
+  level:
+    com:
+      eazybytes:
+        gatewayserver: DEBUG
