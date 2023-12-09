@@ -16,6 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,6 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class CustomerControllerTest {
+
+    public final static String HEADER_ERROR_MSG = "Required header 'eazybank-correlation-id' is not present.";
 
     @Autowired
     MockMvc mockMvc;
@@ -69,17 +74,30 @@ class CustomerControllerTest {
     }
 
     @Test
-    void fetchCustomerDetails_MobileNumber_OK() throws Exception {
+    void fetchCustomerDetails_MobileNumber_and_Header_OK() throws Exception {
         // Given
-        given(customersServMock.fetchCustomerDetails(customerDetailsDto.getMobileNumber())).willReturn(customerDetailsDto);
+        given(customersServMock.fetchCustomerDetails(anyString(), anyString())).willReturn(customerDetailsDto);
+
         mockMvc.perform(get("/api/fetchCustomerDetails")
-                        .param("mobileNumber", customerDetailsDto.getMobileNumber()))
+                        .param("mobileNumber", customerDetailsDto.getMobileNumber())
+                        .header("eazybank-correlation-id",UUID.randomUUID().toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value(customerDetailsDto.getName()))
                 .andExpect(jsonPath("accountsDto.accountNumber")
                         .value(customerDetailsDto.getAccountsDto().getAccountNumber()))
                 .andExpect(jsonPath("loansDto.loanNumber")
                         .value(customerDetailsDto.getLoansDto().getLoanNumber()))
+                .andDo(print());
+    }
+    @Test
+    void fetchCustomerDetails_MobileNumber_OK_and_Header_Not_Present() throws Exception {
+        // Given
+        given(customersServMock.fetchCustomerDetails(anyString(), anyString())).willReturn(customerDetailsDto);
+
+        mockMvc.perform(get("/api/fetchCustomerDetails")
+                        .param("mobileNumber", customerDetailsDto.getMobileNumber()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("detail").value(HEADER_ERROR_MSG))
                 .andDo(print());
     }
 }

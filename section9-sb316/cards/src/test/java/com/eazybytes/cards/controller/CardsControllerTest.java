@@ -15,6 +15,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -79,7 +81,8 @@ class CardsControllerTest {
         given(iCardsServMock.fetchCard(cardsDto.getMobileNumber())).willReturn(cardsDto);
 
         mockMvc.perform(get("/api/fetch")
-                        .param("mobileNumber",cardsDto.getMobileNumber()))
+                        .param("mobileNumber",cardsDto.getMobileNumber())
+                        .header("eazybank-correlation-id",UUID.randomUUID().toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.mobileNumber").value(cardsDto.getMobileNumber()))
                 .andDo(print());
@@ -95,7 +98,8 @@ class CardsControllerTest {
         doThrow(constViolException).when(iCardsServMock).fetchCard(cardsDto.getMobileNumber());
 
         mockMvc.perform(get("/api/fetch")
-                        .param("mobileNumber",cardsDto.getMobileNumber()))
+                        .param("mobileNumber",cardsDto.getMobileNumber())
+                        .header("eazybank-correlation-id",UUID.randomUUID().toString()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errorMessage").value(containsString("fetchCardDetails.mobileNumber")))
                 .andDo(print());

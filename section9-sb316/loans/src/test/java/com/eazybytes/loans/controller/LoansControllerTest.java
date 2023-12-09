@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashSet;
+import java.util.UUID;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -90,7 +91,8 @@ class LoansControllerTest {
 
         // WHEN AND THEN
         mockMvc.perform(get("/api/fetch")
-                        .param("mobileNumber",loansDto.getMobileNumber()))
+                        .param("mobileNumber",loansDto.getMobileNumber())
+                        .header("eazybank-correlation-id",UUID.randomUUID().toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.loanNumber")
                         .value(loansDto.getLoanNumber()))
@@ -106,7 +108,8 @@ class LoansControllerTest {
 
         // WHEN AND THEN
         mockMvc.perform(get("/api/fetch")
-                        .param("mobileNumber",loansDto.getMobileNumber()))
+                        .param("mobileNumber",loansDto.getMobileNumber())
+                        .header("eazybank-correlation-id", UUID.randomUUID().toString()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.errorMessage")
                         .value(containsString("Loan not found")))
