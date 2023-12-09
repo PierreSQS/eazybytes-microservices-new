@@ -75,3 +75,10 @@ info:
     name: "Loans"
     description: "EazyBank Loans Application"
     version: "1.0.0"
+
+# LOANS PACKAGE LOGGING
+logging:
+  level:
+    com:
+      eazybytes:
+        loans: DEBUG

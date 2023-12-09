@@ -74,3 +74,10 @@ info:
     name: "accounts"
     description: "EazyBank Accounts Application"
     version: "1.0.0"
+
+# ACCOUNT PACKAGE LOGGING
+logging:
+  level:
+    com:
+      eazybytes:
+        accounts: DEBUG

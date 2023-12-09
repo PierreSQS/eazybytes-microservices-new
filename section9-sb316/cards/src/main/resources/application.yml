@@ -76,3 +76,10 @@ info:
     name: "Cards"
     description: "EazyBank Cards Application"
     version: "1.0.0"
+
+# CARDS PACKAGE LOGGING
+logging:
+  level:
+    com:
+      eazybytes:
+        cards: DEBUG
