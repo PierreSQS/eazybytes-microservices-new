@@ -14,7 +14,7 @@
 	<!-- NOT NECESSARY -->
 	<packaging>jar</packaging>
 	<name>loans</name>
-	<description>Pierrot Sect9 - Microservice for Loans</description>
+	<description>Pierrot Sect10 - Microservice for Loans</description>
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.4</spring-cloud.version>
@@ -124,7 +124,7 @@
 				<version>3.4.0</version>
 				<configuration>
 					<to>
-						<image>pierrotadesso/${project.artifactId}:s9</image>
+						<image>pierrotadesso/${project.artifactId}:s10</image>
 					</to>
 				</configuration>
 			</plugin>
