@@ -1,0 +1,69 @@
+spring:
+  application:
+    # SAME NAME AS THE PROFILE PROPERTIES FILE
+    # IN THE GIT REP OR CONFIG SERVER (e.g. gatewayserver.yml)
+    # (See Git Repo https://github.com/PierreSQS/eazybytes-config)
+    name: "gatewayserver"
+
+  # CONNECTION TO CONFIGSERVER
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+  # CONFIGURE THE GATEWAY TO CREATE ROUTES BASED
+  # ON SERVICES REGISTERED WITH A DISCOVERY CLIENT
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          # enabled: true // disabled default routing
+          # OPTION TO LOWER CASE SERVICE ID IN PREDICATES
+          lower-case-service-id: true
+
+  # ENABLE COLOR ON TERMINAL ENTRIES
+  output:
+    ansi:
+      enabled: ALWAYS
+
+# ENABLING ACTUATORS PATH LIKE REFRESH PATH
+# TO READ CHANGED PROPERTIES AT RUNTIME WITHOUT
+# RESTARTING THE �SERVICES
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  # ENABLE ACTUATOR GATEWAY ENDPOINT
+  # should be default according to SB DOC
+  # (See https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#actuator-api)
+  endpoint:
+    gateway:
+      enabled: true
+
+  # ENABLE INFO RELATED URL
+  info:
+    env:
+      enabled: true
+
+# APP INFOS FOR THE ACTUATOR
+info:
+  app:
+    name: "gatewayserver"
+    description: "EazyBank Gateway Server Application"
+    version: "1.0.0"
+
+# GATEWAYSERVER LOGGING
+logging:
+  level:
+    com:
+      eazybytes:
+        gatewayserver: DEBUG
+
+# CIRCUIT BREAKER SETTINGS
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10000
