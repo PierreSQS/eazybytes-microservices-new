@@ -41,6 +41,14 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 
+		<!-- SETS THE APP WITH CIRCUIT BREAKER CAPABILITIES
+		     WE USE THE REACTOR DEPENDENCY SINCE EUREKA SERVER
+		     AND GATEWAY SERVER ARE BASED ON REACTIVE MODEL -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
