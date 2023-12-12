@@ -29,6 +29,7 @@ public class CustomersServiceImpl implements ICustomersService {
 
     @Override
     public CustomerDetailsDto fetchCustomerDetails(String mobileNumber, String correlationId) {
+
         // find Customer by mobile Number
         Customer foundCustomer = customerRepo.findByMobileNumber(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber));
@@ -38,27 +39,29 @@ public class CustomersServiceImpl implements ICustomersService {
                 () -> new ResourceNotFoundException("Account", "customerId", foundCustomer.getCustomerId().toString())
         );
 
-        // convert to Dtos
+        // convert Account Entity to Dto
         AccountsDto accountsDto = AccountsMapper.mapToAccountsDto(foundAccount, new AccountsDto());
+
+        // Init CustomerDetails and set AccountsDto
+        CustomerDetailsDto customerDetailsDto =
+                CustomerMapper.mapToCustomerDetailsDto(foundCustomer, new CustomerDetailsDto());
+        customerDetailsDto.setAccountsDto(accountsDto);
 
         // Request Card Details from Cards-µService
         ResponseEntity<CardsDto> cardsDtoResponseEntity = cardsFeignClient.fetchCardDetails(mobileNumber,correlationId);
 
-        // Get CardDto
-        CardsDto cardDtoFromService = cardsDtoResponseEntity.getBody();
+        // Get CardsDto only if exists and Set CustomerDetailsDto
+        if (cardsDtoResponseEntity != null) {
+            customerDetailsDto.setCardsDto(cardsDtoResponseEntity.getBody());
+        }
 
         // Request Loans Details from Loans-µService
         ResponseEntity<LoansDto> loansDtoResponseEntity = loansFeignClient.fetchLoanDetails(mobileNumber,correlationId);
 
-        // Get LoansDto
-        LoansDto loansDtoFromService = loansDtoResponseEntity.getBody();
-
-        // Set CustomerDetails
-        CustomerDetailsDto customerDetailsDto =
-                CustomerMapper.mapToCustomerDetailsDto(foundCustomer, new CustomerDetailsDto());
-        customerDetailsDto.setAccountsDto(accountsDto);
-        customerDetailsDto.setCardsDto(cardDtoFromService);
-        customerDetailsDto.setLoansDto(loansDtoFromService);
+        // Get LoansDto only if exists and Set CustomerDetailsDto
+        if (loansDtoResponseEntity != null) {
+            customerDetailsDto.setLoansDto(loansDtoResponseEntity.getBody());
+        }
 
         return customerDetailsDto;
     }
