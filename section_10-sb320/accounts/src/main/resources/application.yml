@@ -29,6 +29,12 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8071/"
 
+  # ENABLE CIRCUIT BREAKER CAPABILITY
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+
   # ENABLE COLOR ON TERMINAL ENTRIES
   output:
     ansi:
@@ -81,3 +87,12 @@ logging:
     com:
       eazybytes:
         accounts: DEBUG
+
+# CIRCUIT BREAKER SETTINGS
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10000
