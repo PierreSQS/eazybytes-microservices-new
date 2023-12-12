@@ -52,6 +52,14 @@
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 
+		<!-- SETS THE APP WITH CIRCUIT BREAKER CAPABILITIES
+		     WE DON'T USE THE REACTOR DEPENDENCY SINCE
+		     THE ACCOUNTS APP IS NOT BASED ON REACTIVE MODEL -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
