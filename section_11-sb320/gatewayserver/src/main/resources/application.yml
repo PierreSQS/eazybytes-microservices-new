@@ -1,14 +1,23 @@
 spring:
   application:
+    # SAME NAME AS THE PROFILE PROPERTIES FILE
+    # IN THE GIT REP OR CONFIG SERVER (e.g. gatewayserver.yml)
+    # (See Git Repo https://github.com/PierreSQS/eazybytes-config)
     name: "gatewayserver"
+
+  # CONNECTION TO CONFIGSERVER
   config:
     import: "optional:configserver:http://localhost:8071/"
+
+  # CONFIGURE THE GATEWAY TO CREATE ROUTES BASED
+  # ON SERVICES REGISTERED WITH A DISCOVERY CLIENT
   cloud:
     gateway:
       discovery:
         locator:
-          enabled: false
-          lowerCaseServiceId: true
+          # enabled: true // disabled default routing
+          # OPTION TO LOWER CASE SERVICE ID IN PREDICATES
+          lower-case-service-id: true
       httpclient:
         connect-timeout: 1000
         response-timeout: 10s
@@ -19,14 +28,28 @@ spring:
       port: 6379
       timeout: 1s
 
+  # ENABLE COLOR ON TERMINAL ENTRIES
+  output:
+    ansi:
+      enabled: ALWAYS
+
+# ENABLING ACTUATORS PATH LIKE REFRESH PATH
+# TO READ CHANGED PROPERTIES AT RUNTIME WITHOUT
+# RESTARTING THE µSERVICES
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
+  # ENABLE ACTUATOR GATEWAY ENDPOINT
+  # should be default according to SB DOC
+  # (See https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#actuator-api)
   endpoint:
     gateway:
       enabled: true
+
+  # ENABLE INFO RELATED URL
   info:
     env:
       enabled: true
@@ -34,12 +57,14 @@ management:
     tags:
       application: ${spring.application.name}
 
+# APP INFOS FOR THE ACTUATOR
 info:
   app:
     name: "gatewayserver"
     description: "Eazy Bank Gateway Server Application"
     version: "1.0.0"
 
+# GATEWAYSERVER LOGGING
 logging:
   level:
     com:
@@ -48,6 +73,7 @@ logging:
   pattern:
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
+# CIRCUIT BREAKER SETTINGS
 resilience4j.circuitbreaker:
   configs:
     default:

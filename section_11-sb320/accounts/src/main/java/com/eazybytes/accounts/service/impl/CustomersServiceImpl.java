@@ -14,18 +14,18 @@ import com.eazybytes.accounts.repository.CustomerRepository;
 import com.eazybytes.accounts.service.ICustomersService;
 import com.eazybytes.accounts.service.client.CardsFeignClient;
 import com.eazybytes.accounts.service.client.LoansFeignClient;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CustomersServiceImpl implements ICustomersService {
 
-    private AccountsRepository accountsRepository;
-    private CustomerRepository customerRepository;
-    private CardsFeignClient cardsFeignClient;
-    private LoansFeignClient loansFeignClient;
+    private final AccountsRepository accountsRepo;
+    private final CustomerRepository customerRepo;
+    private final CardsFeignClient cardsFeignClient;
+    private final LoansFeignClient loansFeignClient;
 
     /**
      * @param mobileNumber - Input Mobile Number
@@ -34,28 +34,40 @@ public class CustomersServiceImpl implements ICustomersService {
      */
     @Override
     public CustomerDetailsDto fetchCustomerDetails(String mobileNumber, String correlationId) {
-        Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
-                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+
+        // find Customer by mobile Number
+        Customer foundCustomer = customerRepo.findByMobileNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber));
+
+        // find Account by customerID
+        Accounts foundAccount = accountsRepo.findByCustomerId(foundCustomer.getCustomerId()).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "customerId", foundCustomer.getCustomerId().toString())
         );
-        Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
-                () -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString())
-        );
 
-        CustomerDetailsDto customerDetailsDto = CustomerMapper.mapToCustomerDetailsDto(customer, new CustomerDetailsDto());
-        customerDetailsDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts, new AccountsDto()));
+        // convert Account Entity to Dto
+        AccountsDto accountsDto = AccountsMapper.mapToAccountsDto(foundAccount, new AccountsDto());
 
-        ResponseEntity<LoansDto> loansDtoResponseEntity = loansFeignClient.fetchLoanDetails(correlationId, mobileNumber);
-        if(null != loansDtoResponseEntity) {
-            customerDetailsDto.setLoansDto(loansDtoResponseEntity.getBody());
-        }
+        // Init CustomerDetails and set AccountsDto
+        CustomerDetailsDto customerDetailsDto =
+                CustomerMapper.mapToCustomerDetailsDto(foundCustomer, new CustomerDetailsDto());
+        customerDetailsDto.setAccountsDto(accountsDto);
 
-        ResponseEntity<CardsDto> cardsDtoResponseEntity = cardsFeignClient.fetchCardDetails(correlationId, mobileNumber);
-        if(null != cardsDtoResponseEntity) {
+        // Request Card Details from Cards-µService
+        ResponseEntity<CardsDto> cardsDtoResponseEntity = cardsFeignClient.fetchCardDetails(mobileNumber,correlationId);
+
+        // Get CardsDto only if exists and Set CustomerDetailsDto
+        if (cardsDtoResponseEntity != null) {
             customerDetailsDto.setCardsDto(cardsDtoResponseEntity.getBody());
         }
 
+        // Request Loans Details from Loans-µService
+        ResponseEntity<LoansDto> loansDtoResponseEntity = loansFeignClient.fetchLoanDetails(mobileNumber,correlationId);
+
+        // Get LoansDto only if exists and Set CustomerDetailsDto
+        if (loansDtoResponseEntity != null) {
+            customerDetailsDto.setLoansDto(loansDtoResponseEntity.getBody());
+        }
 
         return customerDetailsDto;
-
     }
 }

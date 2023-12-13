@@ -2,9 +2,15 @@ server:
   port: 8080
 spring:
   application:
+    # SAME NAME AS THE PROFILE PROPERTIES FILE
+    # IN THE GIT REP OR CONFIG SERVER (e.g. accounts*.yml)
+    # (See Git Repo https://github.com/PierreSQS/eazybytes-config)
     name: "accounts"
+
+  # ACTIVATE DEFAULT PROFILE
   profiles:
     active: "prod"
+
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
@@ -18,13 +24,25 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  # CONNECTION TO CONFIGSERVER
   config:
     import: "optional:configserver:http://localhost:8071/"
+
+  # ENABLE CIRCUIT BREAKER CAPABILITY
   cloud:
     openfeign:
       circuitbreaker:
         enabled: true
 
+  # ENABLE COLOR ON TERMINAL ENTRIES
+  output:
+    ansi:
+      enabled: ALWAYS
+
+# ENABLING ACTUATORS PATH LIKE REFRESH PATH
+# TO READ CHANGED PROPERTIES AT RUNTIME WITHOUT
+# RESTARTING THE µSERVICES
 management:
   endpoints:
     web:
@@ -35,6 +53,7 @@ management:
       enabled: true
     liveness-state:
       enabled: true
+  # ENABLE SHUTDOWN ENDPOINT URL
   endpoint:
     shutdown:
       enabled: true
@@ -48,12 +67,15 @@ management:
     tags:
       application: ${spring.application.name}
 
+# EXPOSE THE SHUTDOWN REST APIS
 endpoints:
   shutdown:
     enabled: true
 
+# CONNECTION TO EUREKA SERVER
 eureka:
   instance:
+    # SINCE NO DNS, PREFER IpAddress
     preferIpAddress: true
   client:
     fetchRegistry: true
@@ -61,12 +83,14 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
 
+# APP INFOS FOR THE ACTUATOR
 info:
   app:
     name: "accounts"
     description: "Eazy Bank Accounts Application"
     version: "1.0.0"
 
+# ACCOUNT PACKAGE LOGGING
 logging:
   level:
     com:
@@ -75,6 +99,7 @@ logging:
   pattern:
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
+# CIRCUIT BREAKER SETTINGS
 resilience4j.circuitbreaker:
   configs:
     default:

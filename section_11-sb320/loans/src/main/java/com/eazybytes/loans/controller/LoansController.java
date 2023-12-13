@@ -35,26 +35,20 @@ import org.springframework.web.bind.annotation.*;
         description = "CRUD REST APIs in EazyBank to CREATE, UPDATE, FETCH AND DELETE loan details"
 )
 @RestController
+@RequiredArgsConstructor
+@Slf4j
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Validated
 public class LoansController {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoansController.class);
+    private final ILoansService iLoansService;
 
-    private ILoansService iLoansService;
+    private final Environment environment;
 
-    public LoansController(ILoansService iLoansService) {
-        this.iLoansService = iLoansService;
-    }
+    private final LoansContactInfoDto loansContactInfoDto;
 
     @Value("${build.version}")
     private String buildVersion;
-
-    @Autowired
-    private Environment environment;
-
-    @Autowired
-    private LoansContactInfoDto loansContactInfoDto;
 
     @Operation(
             summary = "Create Loan REST API",

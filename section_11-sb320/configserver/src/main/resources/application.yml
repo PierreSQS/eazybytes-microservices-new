@@ -1,27 +1,42 @@
 spring:
   application:
     name: "configserver"
+  # ACTIVATE GIT PROFILE
+  # FOR ACTIVATING GIT STORAGE OF CONFIG FILES
   profiles:
-    # active: native
+    #active: native
     active: git
+
+  # GIT LOCATION OF THE µSERVICES CONFIGS
   cloud:
     config:
       server:
-        # native:
-          # search-locations: "classpath:/config"
-          # search-locations: "file:///Users//eazybytes//Documents//config"
+        #native:
+        #  searchLocations: "classpath:/config/"
+        #  searchLocations: "file:///Users//eazybytes//Documents//config"
         git:
-          uri: "https://github.com/eazybytes/eazybytes-config.git"
+          #uri: "https://github.com/eazybytes/eazybytes-config.git"
+          uri: "https://github.com/PierreSQS/eazybytes-config.git"
           default-label: main
           timeout: 5
           clone-on-start: true
           force-pull: true
 
+  output:
+    ansi:
+      enabled: ALWAYS
+
+# ENABLING ACTUATORS PATH LIKE REFRESH PATH
+# TO READ CHANGED PROPERTIES AT RUNTIME
+# WITHOUT RESTARTING THE µSERVICES
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+  # LIVENESS AND READINESS otherwise
+  # HEALTHCHECK WILL NOT WORK
+  # (See docker-compose file in docker-compose folder)
   health:
     readiness-state:
       enabled: true
@@ -35,6 +50,7 @@ management:
     tags:
       application: ${spring.application.name}
 
+# FOR ENCRYPTING accounts.contactDetails.email"
 encrypt:
   key: "45D81EC1EF61DF9AD8D3E5BB397F9"
 

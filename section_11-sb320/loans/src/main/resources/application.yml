@@ -1,8 +1,14 @@
 server:
   port: 8090
+# FOR CONFIG SERVER
 spring:
   application:
+    # SAME NAME AS THE PROFILE PROPERTIES FILE
+    # IN THE GIT REP OR CONFIG SERVER (e.g. loans*.yml)
+    # (See Git Repo https://github.com/PierreSQS/eazybytes-config)
     name: "loans"
+
+  # ACTIVATE DEFAULT PROFILE
   profiles:
     active: "prod"
   datasource:
@@ -18,9 +24,19 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  # CONNECTION TO CONFIGSERVER
   config:
     import: "optional:configserver:http://localhost:8071/"
 
+  # ENABLE COLOR ON TERMINAL ENTRIES
+  output:
+    ansi:
+      enabled: ALWAYS
+
+# ENABLING ACTUATORS PATH LIKE REFRESH PATH
+# TO READ CHANGED PROPERTIES AT RUNTIME
+# WITHOUT RESTARTING THE µSERVICES
 management:
   endpoints:
     web:
@@ -31,12 +47,16 @@ management:
       enabled: true
     liveness-state:
       enabled: true
+  
+  # ENABLE SHUTDOWN ENDPOINT URL
   endpoint:
     shutdown:
       enabled: true
     health:
       probes:
         enabled: true
+  
+  # ENABLE INFO RELATED URL
   info:
     env:
       enabled: true
@@ -44,12 +64,15 @@ management:
     tags:
       application: ${spring.application.name}
 
+# EXPOSE THE SHUTDOWN REST APIS
 endpoints:
   shutdown:
     enabled: true
 
+# CONNECTION TO EUREKA SERVER
 eureka:
   instance:
+    # SINCE NO DNS, PREFER IpAddress
     preferIpAddress: true
   client:
     fetchRegistry: true
@@ -57,12 +80,14 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
 
+# APP INFOS FOR THE ACTUATOR
 info:
   app:
     name: "loans"
     description: "Eazy Bank Loans Application"
     version: "1.0.0"
 
+# LOANS PACKAGE LOGGING
 logging:
   level:
     com:

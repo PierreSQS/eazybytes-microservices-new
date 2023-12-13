@@ -9,27 +9,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import reactor.core.publisher.Mono;
 
+/**
+ * Custom Filter for the Response Header
+ */
 @Configuration
+@RequiredArgsConstructor
+@Slf4j
 public class ResponseTraceFilter {
-
-    private static final Logger logger = LoggerFactory.getLogger(ResponseTraceFilter.class);
-
-    @Autowired
-    FilterUtility filterUtility;
+    private final FilterUtility filterUtility;
 
     @Bean
     public GlobalFilter postGlobalFilter() {
-        return (exchange, chain) -> {
-            return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
-                String correlationId = filterUtility.getCorrelationId(requestHeaders);
-
-                if(!(exchange.getResponse().getHeaders().containsKey(filterUtility.CORRELATION_ID))) {
-                    logger.debug("Updated the correlation id to the outbound headers: {}", correlationId);
-                    exchange.getResponse().getHeaders().add(filterUtility.CORRELATION_ID, correlationId);
-                }
-
-            }));
-        };
+        return (exchange, chain) -> chain.filter(exchange).then(Mono.fromRunnable(() -> {
+            HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
+            String correlationId = filterUtility.getCorrelationId(requestHeaders);
+            log.debug("Updated the correlation id to the outbound headers: {}", correlationId);
+            exchange.getResponse().getHeaders().add(FilterUtility.CORRELATION_ID, correlationId);
+        }));
     }
 }
