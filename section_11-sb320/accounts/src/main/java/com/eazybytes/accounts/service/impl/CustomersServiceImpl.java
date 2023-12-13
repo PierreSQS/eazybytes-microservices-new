@@ -52,7 +52,7 @@ public class CustomersServiceImpl implements ICustomersService {
                 CustomerMapper.mapToCustomerDetailsDto(foundCustomer, new CustomerDetailsDto());
         customerDetailsDto.setAccountsDto(accountsDto);
 
-        // Request Card Details from Cards-µService
+        // Request Card Details from Cards-MicroService
         ResponseEntity<CardsDto> cardsDtoResponseEntity = cardsFeignClient.fetchCardDetails(mobileNumber,correlationId);
 
         // Get CardsDto only if exists and Set CustomerDetailsDto
@@ -60,7 +60,7 @@ public class CustomersServiceImpl implements ICustomersService {
             customerDetailsDto.setCardsDto(cardsDtoResponseEntity.getBody());
         }
 
-        // Request Loans Details from Loans-µService
+        // Request Loans Details from Loans-ï¿½Service
         ResponseEntity<LoansDto> loansDtoResponseEntity = loansFeignClient.fetchLoanDetails(mobileNumber,correlationId);
 
         // Get LoansDto only if exists and Set CustomerDetailsDto

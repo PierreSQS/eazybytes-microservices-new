@@ -7,7 +7,7 @@ spring:
     #active: native
     active: git
 
-  # GIT LOCATION OF THE µSERVICES CONFIGS
+  # GIT LOCATION OF THE MicroSERVICES CONFIGS
   cloud:
     config:
       server:
@@ -22,13 +22,14 @@ spring:
           clone-on-start: true
           force-pull: true
 
+  # ENABLE COLOR ON TERMINAL ENTRIES
   output:
     ansi:
       enabled: ALWAYS
 
 # ENABLING ACTUATORS PATH LIKE REFRESH PATH
 # TO READ CHANGED PROPERTIES AT RUNTIME
-# WITHOUT RESTARTING THE µSERVICES
+# WITHOUT RESTARTING THE MicroSERVICES
 management:
   endpoints:
     web:

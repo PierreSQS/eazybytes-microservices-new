@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 spring:
   application:
     # SAME NAME AS THE PROFILE PROPERTIES FILE
@@ -42,7 +43,7 @@ spring:
 
 # ENABLING ACTUATORS PATH LIKE REFRESH PATH
 # TO READ CHANGED PROPERTIES AT RUNTIME WITHOUT
-# RESTARTING THE µSERVICES
+# RESTARTING THE MICROSERVICES
 management:
   endpoints:
     web:
@@ -53,6 +54,7 @@ management:
       enabled: true
     liveness-state:
       enabled: true
+
   # ENABLE SHUTDOWN ENDPOINT URL
   endpoint:
     shutdown:
