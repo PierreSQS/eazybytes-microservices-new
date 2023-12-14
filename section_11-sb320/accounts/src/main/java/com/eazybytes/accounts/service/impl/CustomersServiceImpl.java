@@ -61,7 +61,7 @@ public class CustomersServiceImpl implements ICustomersService {
         }
 
         // Request Loans Details from Loans-�Service
-        ResponseEntity<LoansDto> loansDtoResponseEntity = loansFeignClient.fetchLoanDetails(mobileNumber,correlationId);
+        ResponseEntity<LoansDto> loansDtoResponseEntity = loansFeignClient.fetchLoanDetails(correlationId, mobileNumber);
 
         // Get LoansDto only if exists and Set CustomerDetailsDto
         if (loansDtoResponseEntity != null) {
