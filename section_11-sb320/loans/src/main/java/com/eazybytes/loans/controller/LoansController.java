@@ -88,10 +88,12 @@ public class LoansController {
             )
     )
     @GetMapping("/fetch")
-    public ResponseEntity<LoansDto> fetchLoanDetails(@RequestHeader("eazybank-correlation-id") String correlationId,
-                                                                @RequestParam
-                                                               @Pattern(regexp="(^$|\\d{10})",message = "Mobile number must be 10 digits")
-                                                               String mobileNumber) {
+    public ResponseEntity<LoansDto> fetchLoanDetails(
+            @RequestHeader("eazybank-correlation-id") String correlationId,
+            @RequestParam
+            @Pattern(regexp="(^$|\\d{10})",message = "Mobile number must be 10 digits")
+            String mobileNumber) {
+
         log.debug("fetchLoanDetails method start");
         LoansDto loansDto = iLoansService.fetchLoan(mobileNumber);
         log.debug("fetchLoanDetails method end");
@@ -151,9 +153,11 @@ public class LoansController {
             )
     )
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseDto> deleteLoanDetails(@RequestParam
-                                                                @Pattern(regexp="(^$|\\d{10})",message = "Mobile number must be 10 digits")
-                                                                String mobileNumber) {
+    public ResponseEntity<ResponseDto> deleteLoanDetails(
+            @RequestParam
+            @Pattern(regexp="(^$|\\d{10})",message = "Mobile number must be 10 digits")
+            String mobileNumber) {
+
         boolean isDeleted = iLoansService.deleteLoan(mobileNumber);
         if(isDeleted) {
             return ResponseEntity
