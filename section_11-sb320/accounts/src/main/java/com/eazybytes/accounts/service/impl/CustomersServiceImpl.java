@@ -53,7 +53,7 @@ public class CustomersServiceImpl implements ICustomersService {
         customerDetailsDto.setAccountsDto(accountsDto);
 
         // Request Card Details from Cards-MicroService
-        ResponseEntity<CardsDto> cardsDtoResponseEntity = cardsFeignClient.fetchCardDetails(mobileNumber,correlationId);
+        ResponseEntity<CardsDto> cardsDtoResponseEntity = cardsFeignClient.fetchCardDetails(correlationId, mobileNumber);
 
         // Get CardsDto only if exists and Set CustomerDetailsDto
         if (cardsDtoResponseEntity != null) {
