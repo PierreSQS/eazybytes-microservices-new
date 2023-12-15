@@ -9,9 +9,8 @@ import com.eazybytes.accounts.service.client.CardsFeignClient;
 import com.eazybytes.accounts.service.client.LoansFeignClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
@@ -20,7 +19,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
 class CustomersServiceImplTest {
 
     public static final String MOBILE_NR = "1111111111";
@@ -42,6 +40,7 @@ class CustomersServiceImplTest {
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
         customer = new Customer(1L,"test customer",
                 "testcustomer@example", MOBILE_NR);
 
