@@ -47,6 +47,8 @@ management:
     health:
       probes:
         enabled: true
+  # GROUP THE MICROSERVICE METRICS UNDER
+  # THE SAME APPLICATION NAME
   metrics:
     tags:
       application: ${spring.application.name}
