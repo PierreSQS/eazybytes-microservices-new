@@ -20,6 +20,7 @@ spring:
           lower-case-service-id: true
       httpclient:
         connect-timeout: 1000
+        # timeout increased for better availability of microServices
         response-timeout: 10s
   data:
     redis:
