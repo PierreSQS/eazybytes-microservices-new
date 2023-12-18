@@ -78,30 +78,6 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
-  prometheus:
-    image: prom/prometheus:v2.45.0
-    container_name: prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - ../observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
-
-  tempo:
-    image: grafana/tempo
-    container_name: tempo
-    command: -config.file /etc/tempo-config.yml
-    ports:
-      - "3110:3100"
-      - "4317:4317"
-    volumes:
-      - ../observability/tempo/tempo.yml:/etc/tempo-config.yml
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
-
   grafana:
     image: grafana/grafana:latest
     environment:
@@ -212,8 +188,6 @@ services:
     extends:
       file: common-config.yml
       service: microservice-base-config
-    environment:
-      OTEL_SERVICE_NAME: "configserver"
 
   eurekaserver:
     image: "eazybytes/eurekaserver:s11"
@@ -231,7 +205,6 @@ services:
       service: microservice-configserver-config
     environment:
       SPRING_APPLICATION_NAME: "eurekaserver"
-      OTEL_SERVICE_NAME: "eurekaserver"
 
   accounts:
     image: "eazybytes/accounts:s11"
@@ -246,7 +219,6 @@ services:
       start_period: 10s
     environment:
       SPRING_APPLICATION_NAME: "accounts"
-      OTEL_SERVICE_NAME: "accounts"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
@@ -264,7 +236,6 @@ services:
       start_period: 10s
     environment:
       SPRING_APPLICATION_NAME: "loans"
-      OTEL_SERVICE_NAME: "loans"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
@@ -282,7 +253,6 @@ services:
       start_period: 10s
     environment:
       SPRING_APPLICATION_NAME: "cards"
-      OTEL_SERVICE_NAME: "cards"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
@@ -301,7 +271,6 @@ services:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "gatewayserver"
-      OTEL_SERVICE_NAME: "gatewayserver"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
