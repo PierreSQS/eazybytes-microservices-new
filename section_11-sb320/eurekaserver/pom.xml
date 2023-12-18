@@ -35,6 +35,12 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
 
+		<!-- ALLOWS THE APP THE COLLECTION OF METRICS WITH MICROMETER -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+
 		<!-- PREVENTS CVE ISSUE -->
 		<dependency>
 			<groupId>org.yaml</groupId>
