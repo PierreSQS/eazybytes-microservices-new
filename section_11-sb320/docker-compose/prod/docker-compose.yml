@@ -89,6 +89,24 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
+  # TEMPO IS A DATASOURCE WHICH INDEXES
+  # THE OPENTELEMETRY TRACES FOR GRAFANA
+  tempo:
+    image: grafana/tempo
+    container_name: tempo
+    command: -config.file /etc/tempo-config.yml
+    ports:
+      # we map to 3110 because 3100 is already
+      # in use the gateway (See gateway config below
+      # not the gatewayserver's one)
+      - "3110:3100"
+      - "4317:4317"
+    volumes:
+      - ../observability/tempo/tempo.yml:/etc/tempo-config.yml
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   grafana:
     image: grafana/grafana:latest
     environment:
