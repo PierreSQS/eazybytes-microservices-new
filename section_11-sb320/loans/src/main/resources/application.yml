@@ -95,5 +95,6 @@ logging:
     com:
       eazybytes:
         loans: DEBUG
+  # LOGGING PATTERN FOR OPEN TELEMETRY (Tracing)
   pattern:
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
