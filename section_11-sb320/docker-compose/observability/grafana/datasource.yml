@@ -41,6 +41,8 @@ datasources:
     url: http://gateway:3100
     jsonData:
       httpHeaderName1: "X-Scope-OrgID"
+      # ADDED A DERIVED FIELD WITH THE NAME TraceID
+      # TO COLLECT A PARTICULAR TraceID FROM THE LOGS
       derivedFields:
         - datasourceUid: tempo
           matcherRegex: "\\[.+,(.+),.+\\]"
