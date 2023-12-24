@@ -34,6 +34,14 @@ spring:
     ansi:
       enabled: ALWAYS
 
+  # LINK WITH KEYCLOAK
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:7080/realms/EazyBank Realm/protocol/openid-connect/certs
+
+
 # ENABLING ACTUATORS PATH LIKE REFRESH PATH
 # TO READ CHANGED PROPERTIES AT RUNTIME WITHOUT
 # RESTARTING THE MicroSERVICES
