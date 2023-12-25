@@ -72,7 +72,7 @@
 			<artifactId>spring-security-oauth2-resource-server</artifactId>
 		</dependency>
 
-		<!-- SETS THE APP TO BE JWT-TOKENS CAPABILITIES -->
+		<!-- SETS THE APP WITH JWT-TOKENS CAPABILITIES -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-jose</artifactId>
