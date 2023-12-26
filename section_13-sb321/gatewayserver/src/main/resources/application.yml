@@ -1,0 +1,96 @@
+spring:
+  application:
+    # SAME NAME AS THE PROFILE PROPERTIES FILE
+    # IN THE GIT REP OR CONFIG SERVER (e.g. gatewayserver.yml)
+    # (See Git Repo https://github.com/PierreSQS/eazybytes-config)
+    name: "gatewayserver"
+
+  # CONNECTION TO CONFIGSERVER
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+  # CONFIGURE THE GATEWAY TO CREATE ROUTES BASED
+  # ON SERVICES REGISTERED WITH A DISCOVERY CLIENT
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          # enabled: true // disabled default routing
+          # OPTION TO LOWER CASE SERVICE ID IN PREDICATES
+          lower-case-service-id: true
+      httpclient:
+        connect-timeout: 1000
+        # timeout increased for better availability of microServices
+        response-timeout: 10s
+  data:
+    redis:
+      connect-timeout: 2s
+      host: localhost
+      port: 6379
+      timeout: 1s
+
+  # ENABLE COLOR ON TERMINAL ENTRIES
+  output:
+    ansi:
+      enabled: ALWAYS
+
+  # LINK WITH KEYCLOAK
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:7080/realms/EazyBank Realm/protocol/openid-connect/certs
+
+
+# ENABLING ACTUATORS PATH LIKE REFRESH PATH
+# TO READ CHANGED PROPERTIES AT RUNTIME WITHOUT
+# RESTARTING THE MicroSERVICES
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  # ENABLE ACTUATOR GATEWAY ENDPOINT
+  # should be default according to SB DOC
+  # (See https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#actuator-api)
+  endpoint:
+    gateway:
+      enabled: true
+
+  # ENABLE INFO RELATED URL
+  info:
+    env:
+      enabled: true
+  # GROUP THE MICROSERVICE METRICS UNDER
+  # THE SAME APPLICATION NAME
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+# APP INFOS FOR THE ACTUATOR
+info:
+  app:
+    name: "gatewayserver"
+    description: "Eazy Bank Gateway Server Application"
+    version: "1.0.0"
+
+# GATEWAYSERVER LOGGING
+logging:
+  level:
+    com:
+      eazybytes:
+        gatewayserver: DEBUG
+  # LOGGING PATTERN FOR OPEN TELEMETRY (Tracing)
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+# CIRCUIT BREAKER SETTINGS
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10000
+
