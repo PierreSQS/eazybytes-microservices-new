@@ -1,4 +1,17 @@
 services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.3
+    container_name: "keycloak2303-qa"
+    ports:
+      - 7080:8080
+    environment:
+      KEYCLOAK_ADMIN: "admin"
+      KEYCLOAK_ADMIN_PASSWORD: "admin"
+    command: "start-dev"
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   read:
     image: grafana/loki:2.8.3
     command: "-config.file=/etc/loki/config.yaml -target=read"
@@ -79,7 +92,7 @@ services:
       service: network-deploy-service
 
   prometheus:
-    image: prom/prometheus:v2.45.0
+    image: prom/prometheus:v2.48.1 # EazyBytes version is v2.45.0
     container_name: prometheus
     ports:
       - "9090:9090"
@@ -89,11 +102,16 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
+  # TEMPO IS A DATASOURCE WHICH INDEXES
+  # THE OPENTELEMETRY TRACES FOR GRAFANA
   tempo:
     image: grafana/tempo
     container_name: tempo
     command: -config.file /etc/tempo-config.yml
     ports:
+      # we map to 3110 because 3100 is already
+      # in use the gateway (See gateway config below
+      # not the gatewayserver's one)
       - "3110:3100"
       - "4317:4317"
     volumes:
@@ -117,6 +135,7 @@ services:
         /run.sh
     ports:
       - "3000:3000"
+    # LINK GRAFANA AND PROMETHEUS WITH THE DATASOURCE YAML
     volumes:
       - ../observability/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
     healthcheck:
@@ -199,7 +218,7 @@ services:
       service: network-deploy-service
 
   configserver:
-    image: "eazybytes/configserver:s11"
+    image: "pierrotadesso/configserver:s12"
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -216,7 +235,7 @@ services:
       OTEL_SERVICE_NAME: "configserver"
 
   eurekaserver:
-    image: "eazybytes/eurekaserver:s11"
+    image: "pierrotadesso/eurekaserver:s12"
     container_name: eurekaserver-ms
     ports:
       - "8070:8070"
@@ -234,10 +253,8 @@ services:
       OTEL_SERVICE_NAME: "eurekaserver"
 
   accounts:
-    image: "eazybytes/accounts:s11"
+    image: "pierrotadesso/accounts:s12"
     container_name: accounts-ms
-    ports:
-      - "8080:8080"
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
       interval: 20s
@@ -252,10 +269,8 @@ services:
       service: microservice-eureka-config
 
   loans:
-    image: "eazybytes/loans:s11"
+    image: "pierrotadesso/loans:s12"
     container_name: loans-ms
-    ports:
-      - "8090:8090"
     healthcheck:
       test: "curl --fail --silent localhost:8090/actuator/health/readiness | grep UP || exit 1"
       interval: 20s
@@ -270,10 +285,8 @@ services:
       service: microservice-eureka-config
 
   cards:
-    image: "eazybytes/cards:s11"
+    image: "pierrotadesso/cards:s12"
     container_name: cards-ms
-    ports:
-      - "9000:9000"
     healthcheck:
       test: "curl --fail --silent localhost:9000/actuator/health/readiness | grep UP || exit 1"
       interval: 20s
@@ -288,7 +301,7 @@ services:
       service: microservice-eureka-config
 
   gatewayserver:
-    image: "eazybytes/gatewayserver:s11"
+    image: "pierrotadesso/gatewayserver:s12"
     container_name: gatewayserver-ms
     ports:
       - "8072:8072"
@@ -301,6 +314,8 @@ services:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "gatewayserver"
+      # LINK WITH THE KEYCLOAK AUTH-SERVER
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:8080/realms/master/protocol/openid-connect/certs"
       OTEL_SERVICE_NAME: "gatewayserver"
     extends:
       file: common-config.yml
