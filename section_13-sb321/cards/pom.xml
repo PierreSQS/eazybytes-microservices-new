@@ -14,7 +14,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>cards</name>
-	<description>Pierrot Sect12 - Microservice for Cards</description>
+	<description>Pierrot Sect13 - Microservice for Cards</description>
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2023.0.0</spring-cloud.version>
@@ -140,7 +140,7 @@
 				<version>3.4.0</version>
 				<configuration>
 					<to>
-						<image>pierrotadesso/${project.artifactId}:s12</image>
+						<image>pierrotadesso/${project.artifactId}:s13</image>
 					</to>
 				</configuration>
 			</plugin>
