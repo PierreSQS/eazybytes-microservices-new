@@ -35,6 +35,20 @@ spring:
     openfeign:
       circuitbreaker:
         enabled: true
+      # STREAM AND BINDING STUFF FOR RABBITMQ
+      stream:
+        bindings:
+          sendCommunication-out-0:
+            destination: send-communication
+
+  # RabbitMQ CREDENTIALS
+  rabbitmq:
+     host: localhost
+     port: 5672
+     username: guest
+     password: guest
+     connection-timeout: 10s
+
 
   # ENABLE COLOR ON TERMINAL ENTRIES
   output:
