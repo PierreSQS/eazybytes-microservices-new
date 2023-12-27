@@ -5,7 +5,21 @@ spring:
   application:
     name: "message"
 
-  # Compose functions in MessageFunctions together
+  # COMPOSE FUNCTIONS IN MessageFunctions TOGETHER
   cloud:
     function:
       definition: email|sms
+    # STREAM AND BINDING STUFF FOR RABBITMQ
+    stream:
+      bindings:
+        emailsms-in-0:
+          destination: send-communication
+          group: ${spring.application.name}
+
+  # RabbitMQ CREDENTIALS
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    connection-timeout: 10s
