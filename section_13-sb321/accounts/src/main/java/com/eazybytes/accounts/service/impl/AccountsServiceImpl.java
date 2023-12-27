@@ -2,6 +2,7 @@ package com.eazybytes.accounts.service.impl;
 
 import com.eazybytes.accounts.constants.AccountsConstants;
 import com.eazybytes.accounts.dto.AccountsDto;
+import com.eazybytes.accounts.dto.AccountsMsgDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.entity.Accounts;
 import com.eazybytes.accounts.entity.Customer;
@@ -12,18 +13,24 @@ import com.eazybytes.accounts.mapper.CustomerMapper;
 import com.eazybytes.accounts.repository.AccountsRepository;
 import com.eazybytes.accounts.repository.CustomerRepository;
 import com.eazybytes.accounts.service.IAccountsService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Random;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Slf4j
 public class AccountsServiceImpl  implements IAccountsService {
 
-    private AccountsRepository accountsRepository;
-    private CustomerRepository customerRepository;
+    public static final String CUSTOMER = "Customer";
+    private final AccountsRepository accountsRepository;
+    private final CustomerRepository customerRepository;
+    private final StreamBridge streamBridge;
 
     /**
      * @param customerDto - CustomerDto Object
@@ -37,7 +44,9 @@ public class AccountsServiceImpl  implements IAccountsService {
                     +customerDto.getMobileNumber());
         }
         Customer savedCustomer = customerRepository.save(customer);
-        accountsRepository.save(createNewAccount(savedCustomer));
+        Accounts savedAccount = accountsRepository.save(createNewAccount(savedCustomer));
+
+        sendCommunication(savedAccount,savedCustomer);
     }
 
     /**
@@ -62,7 +71,7 @@ public class AccountsServiceImpl  implements IAccountsService {
     @Override
     public CustomerDto fetchAccount(String mobileNumber) {
         Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
-                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+                () -> new ResourceNotFoundException(CUSTOMER, "mobileNumber", mobileNumber)
         );
         Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
                 () -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString())
@@ -89,13 +98,23 @@ public class AccountsServiceImpl  implements IAccountsService {
 
             Long customerId = accounts.getCustomerId();
             Customer customer = customerRepository.findById(customerId).orElseThrow(
-                    () -> new ResourceNotFoundException("Customer", "CustomerID", customerId.toString())
+                    () -> new ResourceNotFoundException(CUSTOMER, "CustomerID", customerId.toString())
             );
             CustomerMapper.mapToCustomer(customerDto,customer);
             customerRepository.save(customer);
             isUpdated = true;
         }
         return  isUpdated;
+    }
+
+    private void sendCommunication(Accounts accounts, Customer customer) {
+        val accountsMsgDto = new AccountsMsgDto(accounts.getAccountNumber(), customer.getName(),
+                customer.getMobileNumber());
+
+        log.info("Sending Communication Request for the Details {}",accountsMsgDto);
+        boolean isSent = streamBridge.send("sendCommunication-out-0", accountsMsgDto);
+        log.info("Communication successfully sent?: {}",isSent);
+
     }
 
     /**
@@ -105,7 +124,7 @@ public class AccountsServiceImpl  implements IAccountsService {
     @Override
     public boolean deleteAccount(String mobileNumber) {
         Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
-                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+                () -> new ResourceNotFoundException(CUSTOMER, "mobileNumber", mobileNumber)
         );
         accountsRepository.deleteByCustomerId(customer.getCustomerId());
         customerRepository.deleteById(customer.getCustomerId());
