@@ -1,1 +1,11 @@
+server:
+  port: 9010
 
+spring:
+  application:
+    name: "message"
+
+  # Compose functions in MessageFunctions together
+  cloud:
+    function:
+      definition: email|sms
