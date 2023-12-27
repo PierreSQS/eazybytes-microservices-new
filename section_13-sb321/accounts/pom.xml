@@ -37,6 +37,22 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<!-- FRAMEWORK FOR BUILDING HIGHLY SCALABLE EVENT-DRIVEN
+		     MICROSERVICES CONNECTED WITH SHARED MESSAGING SYSTEMS
+		     (REQUIRES A BINDER, e.g. Apache Kafka, Apache Pulsar,
+		     RabbitMQ, or Solace PubSub+)-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream</artifactId>
+		</dependency>
+
+		<!-- BINDER FOR RabbitMQ-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+		</dependency>
+
 		<!-- CONNECTION TO THE CONFIG SERVER -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
