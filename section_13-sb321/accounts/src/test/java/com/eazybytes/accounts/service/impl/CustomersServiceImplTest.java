@@ -51,7 +51,7 @@ class CustomersServiceImplTest {
                 "testcustomer@example", MOBILE_NR);
 
         accounts = new Accounts(1L,123456789L,
-                "Home Loan","Wall Street");
+                "Home Loan","Wall Street",true);
 
         customersServ =
                 new CustomersServiceImpl(accountsRepo, customerRepo, cardsFeignClient, loansFeignClient);
