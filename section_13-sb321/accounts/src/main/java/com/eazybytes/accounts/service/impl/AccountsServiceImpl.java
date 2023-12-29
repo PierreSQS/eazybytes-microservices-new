@@ -28,6 +28,7 @@ import java.util.Random;
 public class AccountsServiceImpl  implements IAccountsService {
 
     public static final String CUSTOMER = "Customer";
+    public static final String RESOURCE_NAME = "Account";
     private final AccountsRepository accountsRepository;
     private final CustomerRepository customerRepository;
     private final StreamBridge streamBridge;
@@ -74,7 +75,7 @@ public class AccountsServiceImpl  implements IAccountsService {
                 () -> new ResourceNotFoundException(CUSTOMER, "mobileNumber", mobileNumber)
         );
         Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
-                () -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString())
+                () -> new ResourceNotFoundException(RESOURCE_NAME, "customerId", customer.getCustomerId().toString())
         );
         CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
         customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts, new AccountsDto()));
@@ -91,7 +92,7 @@ public class AccountsServiceImpl  implements IAccountsService {
         AccountsDto accountsDto = customerDto.getAccountsDto();
         if(accountsDto !=null ){
             Accounts accounts = accountsRepository.findById(accountsDto.getAccountNumber()).orElseThrow(
-                    () -> new ResourceNotFoundException("Account", "AccountNumber", accountsDto.getAccountNumber().toString())
+                    () -> new ResourceNotFoundException(RESOURCE_NAME, "AccountNumber", accountsDto.getAccountNumber().toString())
             );
             AccountsMapper.mapToAccounts(accountsDto, accounts);
             accounts = accountsRepository.save(accounts);
@@ -129,6 +130,20 @@ public class AccountsServiceImpl  implements IAccountsService {
         accountsRepository.deleteByCustomerId(customer.getCustomerId());
         customerRepository.deleteById(customer.getCustomerId());
         return true;
+    }
+
+    @Override
+    public boolean updateCommunicationStatus(Long accountNumber) {
+        boolean isUpdated = false;
+
+        if (accountNumber != null) {
+            Accounts accounts = accountsRepository.findById(accountNumber).orElseThrow(
+                    () -> new ResourceNotFoundException(RESOURCE_NAME, "accountNumber", accountNumber.toString()));
+            accounts.setCommunicationFlag(true);
+            accountsRepository.save(accounts);
+            isUpdated = true;
+        }
+        return isUpdated;
     }
 
 
