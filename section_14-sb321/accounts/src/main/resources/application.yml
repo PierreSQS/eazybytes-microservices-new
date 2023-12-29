@@ -50,14 +50,11 @@ spring:
           # writing queue name
           destination: send-communication
 
-  # RabbitMQ CREDENTIALS
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-    connection-timeout: 10s
-
+  # LINK TO KAFKA
+  kafka:
+    binder:
+      brokers:
+        - localhost:9092
 
   # ENABLE COLOR ON TERMINAL ENTRIES
   output:

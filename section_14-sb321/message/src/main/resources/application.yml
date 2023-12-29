@@ -20,10 +20,8 @@ spring:
         emailsms-out-0:
           destination: communication-sent
 
-  # RabbitMQ CREDENTIALS
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-    connection-timeout: 10s
+  # LINK TO KAFKA
+  kafka:
+    binder:
+      brokers:
+        - localhost:9092
