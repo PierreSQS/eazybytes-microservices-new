@@ -114,7 +114,7 @@ public class AccountsServiceImpl  implements IAccountsService {
 
         log.info("Sending Communication Request for the Details {}",accountsMsgDto);
         boolean isSent = streamBridge.send("sendCommunication-out-0", accountsMsgDto);
-        log.info("Communication successfully sent?: {}",isSent);
+        log.info("Communication successfully triggered?: {}",isSent);
 
     }
 
