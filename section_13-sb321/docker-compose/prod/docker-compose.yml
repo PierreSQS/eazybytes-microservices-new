@@ -1,4 +1,21 @@
 services:
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq_3.12
+    hostname: rabbitmq_3.12
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   keycloak:
     image: quay.io/keycloak/keycloak:23.0.3
     container_name: "keycloak2303-prod"
@@ -218,7 +235,7 @@ services:
       service: network-deploy-service
 
   configserver:
-    image: "pierrotadesso/configserver:s12"
+    image: "pierrotadesso/configserver:s13"
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -235,7 +252,7 @@ services:
       OTEL_SERVICE_NAME: "configserver"
 
   eurekaserver:
-    image: "pierrotadesso/eurekaserver:s12"
+    image: "pierrotadesso/eurekaserver:s13"
     container_name: eurekaserver-ms
     ports:
       - "8070:8070"
@@ -253,7 +270,7 @@ services:
       OTEL_SERVICE_NAME: "eurekaserver"
 
   accounts:
-    image: "pierrotadesso/accounts:s12"
+    image: "pierrotadesso/accounts:s13"
     container_name: accounts-ms
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
@@ -261,15 +278,19 @@ services:
       timeout: 5s
       retries: 20
       start_period: 10s
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "accounts"
       OTEL_SERVICE_NAME: "accounts"
+      SPRING_RABBITMQ_HOST: "rabbitmq_3.12"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
 
   loans:
-    image: "pierrotadesso/loans:s12"
+    image: "pierrotadesso/loans:s13"
     container_name: loans-ms
     healthcheck:
       test: "curl --fail --silent localhost:8090/actuator/health/readiness | grep UP || exit 1"
@@ -285,7 +306,7 @@ services:
       service: microservice-eureka-config
 
   cards:
-    image: "pierrotadesso/cards:s12"
+    image: "pierrotadesso/cards:s13"
     container_name: cards-ms
     healthcheck:
       test: "curl --fail --silent localhost:9000/actuator/health/readiness | grep UP || exit 1"
@@ -300,8 +321,20 @@ services:
       file: common-config.yml
       service: microservice-eureka-config
 
+  message:
+    image: "pierrotadesso/message:s13"
+    container_name: message-ms
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      SPRING_RABBITMQ_HOST: "rabbitmq_3.12"
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   gatewayserver:
-    image: "pierrotadesso/gatewayserver:s12"
+    image: "pierrotadesso/gatewayserver:s13"
     container_name: gatewayserver-ms
     ports:
       - "8072:8072"
@@ -315,8 +348,8 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "gatewayserver"
       # LINK WITH THE KEYCLOAK AUTH-SERVER
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:8080/realms/master/protocol/openid-connect/certs"
       OTEL_SERVICE_NAME: "gatewayserver"
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:8080/realms/master/protocol/openid-connect/certs"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
