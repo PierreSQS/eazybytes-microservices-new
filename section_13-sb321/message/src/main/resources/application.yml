@@ -12,9 +12,13 @@ spring:
     # STREAM AND BINDING STUFF FOR RABBITMQ
     stream:
       bindings:
+        # INPUT EXCHANGE
         emailsms-in-0:
           destination: send-communication
           group: ${spring.application.name}
+        # OUTPUT EXCHANGE
+        emailsms-out-0:
+          destination: communication-sent
 
   # RabbitMQ CREDENTIALS
   rabbitmq:

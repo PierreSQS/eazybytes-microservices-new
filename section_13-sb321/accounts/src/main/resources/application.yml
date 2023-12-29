@@ -35,10 +35,19 @@ spring:
     openfeign:
       circuitbreaker:
         enabled: true
+    function:
+      definition: updateCommunication
     # STREAM AND BINDING STUFF FOR RABBITMQ
     stream:
       bindings:
+        # reading RabbitMQ exchange with the function as prefix
+        updateCommunication-in-0:
+          # reading queue name
+          destination: communication-sent
+          group: ${spring.application.name}
+        # writing RabbitMQ exchange with the function as prefix
         sendCommunication-out-0:
+          # writing queue name
           destination: send-communication
 
   # RabbitMQ CREDENTIALS
