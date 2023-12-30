@@ -20,8 +20,8 @@ spring:
         emailsms-out-0:
           destination: communication-sent
 
-  # LINK TO KAFKA
-  kafka:
-    binder:
-      brokers:
-        - localhost:9092
+      # LINK TO KAFKA
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092

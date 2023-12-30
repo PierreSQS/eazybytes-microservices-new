@@ -50,11 +50,11 @@ spring:
           # writing queue name
           destination: send-communication
 
-  # LINK TO KAFKA
-  kafka:
-    binder:
-      brokers:
-        - localhost:9092
+      # LINK TO KAFKA
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
 
   # ENABLE COLOR ON TERMINAL ENTRIES
   output:
