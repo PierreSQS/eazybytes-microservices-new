@@ -284,13 +284,10 @@ services:
       timeout: 5s
       retries: 20
       start_period: 10s
-    depends_on:
-      kafka:
-        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "accounts"
       OTEL_SERVICE_NAME: "accounts"
-      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: localhost:9092
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: kafka:9092
     extends:
       file: common-config.yml
       service: microservice-eureka-config
@@ -330,11 +327,8 @@ services:
   message:
     image: "pierrotadesso/message:s14"
     container_name: message-ms
-    depends_on:
-      kafka:
-        condition: service_healthy
     environment:
-      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: localhost:9092
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: kafka:9092
     extends:
       file: common-config.yml
       service: network-deploy-service
@@ -359,6 +353,10 @@ services:
     extends:
       file: common-config.yml
       service: microservice-eureka-config
+
+volumes:
+  kafka_data:
+    driver: local
 
 networks:
   eazybank:
