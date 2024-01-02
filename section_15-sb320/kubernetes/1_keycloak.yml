@@ -1,9 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: keycloak
-  labels:
-    app: keycloak
+  name: keycloak2303
 spec:
   replicas: 1
   selector:
