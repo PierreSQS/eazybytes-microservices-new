@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: gatewayserver
-        image: eazybytes/gatewayserver:s12
+        image: pierrotadesso/gatewayserver:s12
         ports:
         - containerPort: 8072
         env:

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: loans
-        image: eazybytes/loans:s12
+        image: pierrotadesso/loans:s12
         ports:
         - containerPort: 8090
         env:
