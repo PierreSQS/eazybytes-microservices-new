@@ -1,6 +1,6 @@
 apiVersion: v2
-name: dev-env
-description: A Helm chart for Kubernetes (dev-env)
+name: qa-env
+description: A Helm chart for Kubernetes (qa-env)
 
 # A chart can be either an 'application' or a 'library' chart.
 #
