@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 global:
-  configMapName: eazybankdev-configmap
+  configMapName: eazybankqa-configmap
   activeProfile: qa
   configServerURL: configserver:http://configserver:8071/
   eurekaServerURL: http://eurekaserver:8070/eureka/
