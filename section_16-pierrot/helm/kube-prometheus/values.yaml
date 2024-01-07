@@ -1159,8 +1159,10 @@ prometheus:
   ## @param prometheus.additionalScrapeConfigs.internal.jobList A list of Prometheus scrape jobs
   ##
   additionalScrapeConfigs:
-    enabled: false
-    type: external
+    # made the service internal to protect it form outside
+    # and enabled scrape capabilities and  
+    enabled: true
+    type: internal
     external:
       ## Name of the secret that Prometheus should use for the additional scrape configuration
       ##
@@ -1169,7 +1171,63 @@ prometheus:
       ##
       key: ""
     internal:
-      jobList: []
+      # defined the joblist of the services to scrape the metrics
+      jobList: [
+        {
+            "job_name": "configserver",
+            "metrics_path": "/actuator/prometheus",
+            "static_configs": [
+              {
+                "targets": ["configserver:8071"]
+              }
+            ]
+       },
+       {
+            "job_name": "eurekaserver",
+            "metrics_path": "/actuator/prometheus",
+            "static_configs": [
+              {
+                "targets": ["eurekaserver:8070"]
+              }
+            ]
+       },
+       {
+            "job_name": "accounts",
+            "metrics_path": "/actuator/prometheus",
+            "static_configs": [
+              {
+                "targets": ["accounts:8080"]
+              }
+            ]
+       },
+       {
+            "job_name": "loans",
+            "metrics_path": "/actuator/prometheus",
+            "static_configs": [
+              {
+                "targets": ["loans:8090"]
+              }
+            ]
+       },
+       {
+            "job_name": "cards",
+            "metrics_path": "/actuator/prometheus",
+            "static_configs": [
+              {
+                "targets": ["cards:9000"]
+              }
+            ]
+       },
+       {
+            "job_name": "gatewayserver",
+            "metrics_path": "/actuator/prometheus",
+            "static_configs": [
+              {
+                "targets": ["gatewayserver:8072"]
+              }
+            ]
+       }
+      ]
   ## @param prometheus.additionalScrapeConfigsExternal.enabled Deprecated: Enable additional scrape configs that are managed externally to this chart
   ## @param prometheus.additionalScrapeConfigsExternal.name Deprecated: Name of the secret that Prometheus should use for the additional scrape configuration
   ## @param prometheus.additionalScrapeConfigsExternal.key Deprecated: Name of the key inside the secret to be used for the additional scrape configuration
