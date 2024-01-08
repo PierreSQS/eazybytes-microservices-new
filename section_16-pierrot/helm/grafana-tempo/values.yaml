@@ -115,10 +115,12 @@ tempo:
     otlp:
       ## @param tempo.traces.otlp.http Enable Tempo to ingest Open Telemetry HTTP traces
       ##
-      http: false
+      # ENABLE HTTP AND GRPC PROTOCOL
+      # TO ALLOW THE SENDING OF TRACING TO TEMPO
+      http: true
       ## @param tempo.traces.otlp.grpc Enable Tempo to ingest Open Telemetry GRPC traces
       ##
-      grpc: false
+      grpc: true
     ## @param tempo.traces.opencensus Enable Tempo to ingest Open Census traces
     ##
     opencensus: false
