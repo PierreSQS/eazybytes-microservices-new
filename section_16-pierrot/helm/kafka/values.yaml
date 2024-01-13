@@ -112,8 +112,8 @@ existingConfigmap: ""
 ##
 extraConfig:
   # THESE EXTRA CONFIGS ARE NECESSARY WHEN USING ONE BROKER
-  offsetsTopicReplicationFactor=1
-  transactionStateLogReplicationFactor=1
+  offsets.topic.replication.factor=1
+  # transaction.state.log.replication.factor=1
 ## @param secretConfig Additional configuration to be appended at the end of the generated Kafka configuration file.
 ## This value will be stored in a secret.
 ##
