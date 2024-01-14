@@ -1171,59 +1171,59 @@ prometheus:
       ##
       key: ""
     internal:
-      # defined the joblist of the services to scrape the metrics
+      # DEFINED THE JOB LIST OF THE SERVICES TO SCRAPE THE METRICS
       jobList: [
         {
-            "job_name": "configserver",
+            "job_name": "configserver-service",
             "metrics_path": "/actuator/prometheus",
             "static_configs": [
               {
-                "targets": ["configserver:8071"]
+                "targets": ["configserver-service:8071"]
               }
             ]
        },
        {
-            "job_name": "eurekaserver",
+            "job_name": "eurekaserver-service",
             "metrics_path": "/actuator/prometheus",
             "static_configs": [
               {
-                "targets": ["eurekaserver:8070"]
+                "targets": ["eurekaserver-service:8070"]
               }
             ]
        },
        {
-            "job_name": "accounts",
+            "job_name": "accounts-service",
             "metrics_path": "/actuator/prometheus",
             "static_configs": [
               {
-                "targets": ["accounts:8080"]
+                "targets": ["accounts-service:8080"]
               }
             ]
        },
        {
-            "job_name": "loans",
+            "job_name": "loans-service",
             "metrics_path": "/actuator/prometheus",
             "static_configs": [
               {
-                "targets": ["loans:8090"]
+                "targets": ["loans-service:8090"]
               }
             ]
        },
        {
-            "job_name": "cards",
+            "job_name": "cards-service",
             "metrics_path": "/actuator/prometheus",
             "static_configs": [
               {
-                "targets": ["cards:9000"]
+                "targets": ["cards-service:9000"]
               }
             ]
        },
        {
-            "job_name": "gatewayserver",
+            "job_name": "gatewayserver-service",
             "metrics_path": "/actuator/prometheus",
             "static_configs": [
               {
-                "targets": ["gatewayserver:8072"]
+                "targets": ["gatewayserver-service:8072"]
               }
             ]
        }
