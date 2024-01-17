@@ -13,15 +13,18 @@ spring:
   # ON SERVICES REGISTERED WITH A DISCOVERY CLIENT
   cloud:
     gateway:
-      discovery:
-        locator:
-          # enabled: true // disabled default routing
-          # OPTION TO LOWER CASE SERVICE ID IN PREDICATES
-          lower-case-service-id: true
       httpclient:
         connect-timeout: 1000
         # timeout increased for better availability of microServices
         response-timeout: 10s
+
+    kubernetes:
+      discovery:
+        # NOT NECESSARY DEFAULT VALUE
+        enabled: true
+        # ENABLE DISCOVERY IN ALL NAMESPACES
+        all-namespaces: true
+
   data:
     redis:
       connect-timeout: 2s
