@@ -12,7 +12,7 @@
 	<artifactId>configserver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>configserver</name>
-	<description>Pierrot Sect14 - Config Server for EazyBank microservices</description>
+	<description>Pierrot Sect17 - Config Server for EazyBank microservices</description>
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2023.0.0</spring-cloud.version>
@@ -88,7 +88,7 @@
 				<version>3.4.0</version>
 				<configuration>
 					<to>
-						<image>pierrotadesso/${project.artifactId}:s14</image>
+						<image>pierrotadesso/${project.artifactId}:s17</image>
 					</to>
 				</configuration>
 			</plugin>
