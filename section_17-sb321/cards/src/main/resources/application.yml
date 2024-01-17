@@ -30,6 +30,11 @@ spring:
   # CONNECTION TO CONFIGSERVER
   config:
     import: "optional:configserver:http://localhost:8071/"
+  cloud:
+    kubernetes:
+      discovery:
+        # ENABLE DISCOVERY IN ALL NAMESPACES
+        all-namespaces: true
 
   # ENABLE COLOR ON TERMINAL ENTRIES
   output:
@@ -72,17 +77,6 @@ management:
 endpoints:
   shutdown:
     enabled: true
-
-# CONNECTION TO EUREKA SERVER
-eureka:
-  instance:
-    # SINCE NO DNS, PREFER IPADDRESS
-    preferIpAddress: true
-  client:
-    fetchRegistry: true
-    registerWithEureka: true
-    serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
 
 # APP INFOS FOR THE ACTUATOR
 info:
