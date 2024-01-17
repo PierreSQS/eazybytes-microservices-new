@@ -1,0 +1,153 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    # SAME NAME AS THE PROFILE PROPERTIES FILE
+    # IN THE GIT REP OR CONFIG SERVER (e.g. accounts*.yml)
+    # (See Git Repo https://github.com/PierreSQS/eazybytes-config)
+    name: "accounts"
+
+  # ACTIVATE DEFAULT PROFILE
+  profiles:
+    active: "prod"
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  # CONNECTION TO CONFIGSERVER
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+  # ENABLE CIRCUIT BREAKER CAPABILITY
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+    function:
+      definition: updateCommunication
+    # STREAM AND BINDING STUFF FOR RABBITMQ
+    stream:
+      bindings:
+        # reading KAFKA exchange with the function as prefix
+        updateCommunication-in-0:
+          # reading queue name
+          destination: communication-sent
+          group: ${spring.application.name}
+        # writing KAFKA exchange with the function as prefix
+        sendCommunication-out-0:
+          # writing queue name
+          destination: send-communication
+
+      # LINK TO KAFKA
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
+
+  # ENABLE COLOR ON TERMINAL ENTRIES
+  output:
+    ansi:
+      enabled: ALWAYS
+
+# ENABLING ACTUATORS PATH LIKE REFRESH PATH
+# TO READ CHANGED PROPERTIES AT RUNTIME WITHOUT
+# RESTARTING THE MICROSERVICES
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+
+  # ENABLE SHUTDOWN ENDPOINT URL
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+  # GROUP THE MICROSERVICE METRICS UNDER
+  # THE SAME APPLICATION NAME
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+# EXPOSE THE SHUTDOWN REST APIS
+endpoints:
+  shutdown:
+    enabled: true
+
+# CONNECTION TO EUREKA SERVER
+eureka:
+  instance:
+    # SINCE NO DNS, PREFER IpAddress
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+# APP INFOS FOR THE ACTUATOR
+info:
+  app:
+    name: "accounts"
+    description: "Eazy Bank Accounts Application"
+    version: "1.0.0"
+
+# ACCOUNT PACKAGE LOGGING
+logging:
+  level:
+    com:
+      eazybytes:
+        accounts: DEBUG
+  # LOGGING PATTERN FOR OPEN TELEMETRY (Tracing)
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+# CIRCUIT BREAKER SETTINGS
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10000
+
+resilience4j.retry:
+  configs:
+    default:
+      maxRetryAttempts: 3
+      waitDuration: 500
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
+      ignoreExceptions:
+        - java.lang.NullPointerException
+      retryExceptions:
+        - java.util.concurrent.TimeoutException
+
+resilience4j.ratelimiter:
+  configs:
+    default:
+      timeoutDuration: 1000
+      limitRefreshPeriod: 5000
+      limitForPeriod: 1
