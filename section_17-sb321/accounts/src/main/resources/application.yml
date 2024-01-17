@@ -30,10 +30,14 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8071/"
 
-  # ENABLE CIRCUIT BREAKER CAPABILITY
   cloud:
+    kubernetes:
+      discovery:
+        # ENABLE DISCOVERY IN ALL NAMESPACES
+        all-namespaces: true
     openfeign:
       circuitbreaker:
+        # ENABLE CIRCUIT BREAKER CAPABILITY
         enabled: true
     function:
       definition: updateCommunication
@@ -95,17 +99,6 @@ management:
 endpoints:
   shutdown:
     enabled: true
-
-# CONNECTION TO EUREKA SERVER
-eureka:
-  instance:
-    # SINCE NO DNS, PREFER IpAddress
-    preferIpAddress: true
-  client:
-    fetchRegistry: true
-    registerWithEureka: true
-    serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
 
 # APP INFOS FOR THE ACTUATOR
 info:

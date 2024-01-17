@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 // registered in the Eureka Server
 // probably as spring.application.name
 // in application.yml file
-@FeignClient(name = "cards", fallback = CardsFallback.class)
+@FeignClient(name = "cards", url = "http://cards-service:9000", fallback = CardsFallback.class)
 public interface CardsFeignClient {
 
     @GetMapping(value = "/api/fetch")
