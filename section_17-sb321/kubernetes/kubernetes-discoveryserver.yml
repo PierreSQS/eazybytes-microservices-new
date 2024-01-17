@@ -42,7 +42,7 @@ items:
       name: namespace-reader
     rules:
       - apiGroups: ["", "extensions", "apps"]
-        resources: ["services", "endpoints"]
+        resources: ["services", "endpoints", "pods"]
         verbs: ["get", "list", "watch"]
   - apiVersion: apps/v1
     kind: Deployment
@@ -66,9 +66,13 @@ items:
               httpGet:
                 port: 8761
                 path: /actuator/health/readiness
+              initialDelaySeconds: 100
+              periodSeconds: 30  
             livenessProbe:
               httpGet:
                 port: 8761
                 path: /actuator/health/liveness
+              initialDelaySeconds: 100
+              periodSeconds: 30  
             ports:
             - containerPort: 8761
