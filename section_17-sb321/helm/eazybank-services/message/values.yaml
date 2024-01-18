@@ -10,7 +10,7 @@ replicaCount: 1
 
 image:
   repository: pierrotadesso/message
-  tag: s14
+  tag: s17
 
 containerPort: 9010
 
@@ -22,7 +22,7 @@ service:
 appname_enabled: true
 profile_enabled: false
 config_enabled: false
-eureka_enabled: false
+discovery_enabled: false
 resouceserver_enabled: false
 otel_enabled: false
 kafka_enabled: true
