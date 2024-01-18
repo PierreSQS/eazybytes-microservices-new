@@ -6,7 +6,7 @@ global:
   configMapName: eazybankdev-configmap
   activeProfile: default
   configServerURL: configserver:http://configserver-service:8071/
-  eurekaServerURL: http://eurekaserver-service:8070/eureka/
+  discoveryServerURL: http://spring-cloud-kubernetes-discoveryserver:80
   keyCloakURL: http://keycloak2303.default.svc.cluster.local:80/realms/master/protocol/openid-connect/certs
   openTelemetryJavaAgent: "-javaagent:/app/libs/opentelemetry-javaagent-1.28.0.jar"
   otelExporterEndPoint: http://tempo-grafana-tempo-distributor:4317
