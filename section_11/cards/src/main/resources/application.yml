@@ -1,6 +1,9 @@
 server:
   port: 9000
 spring:
+  output:
+    ansi:
+      enabled: ALWAYS
   application:
     name: "cards"
   profiles:
