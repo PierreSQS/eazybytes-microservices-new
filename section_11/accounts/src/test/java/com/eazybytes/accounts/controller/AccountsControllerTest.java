@@ -13,6 +13,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -44,6 +46,7 @@ class AccountsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(customerDto)))
                 .andExpect(status().isCreated())
-                .andDo(result -> System.out.println(result.getResponse().getContentAsString()));
+                .andExpect(jsonPath("$.statusMsg").value("Account created successfully"))
+                .andDo(print());
     }
 }
