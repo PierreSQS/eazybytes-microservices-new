@@ -5,9 +5,15 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Schema(
         name = "Customer",
         description = "Schema to hold Customer and Account information"
@@ -31,7 +37,7 @@ public class CustomerDto {
     @Schema(
             description = "Mobile Number of the customer", example = "9345432123"
     )
-    @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
+    @Pattern(regexp = "(^$|\\d{10})", message = "Mobile number must be 10 digits")
     private String mobileNumber;
 
     @Schema(
