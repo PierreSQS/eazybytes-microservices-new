@@ -70,6 +70,11 @@ spec:
             configMapKeyRef:
               name: {{ .Values.global.configMapName }}
               key: OTEL_METRICS_EXPORTER
+        - name: OTEL_LOGS_EXPORTER
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: OTEL_LOGS_EXPORTER
         - name: OTEL_SERVICE_NAME
           value: {{ .Values.appName }}
         {{- end }}

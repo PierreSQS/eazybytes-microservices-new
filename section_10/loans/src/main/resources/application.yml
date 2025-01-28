@@ -33,17 +33,13 @@ management:
       enabled: true
   endpoint:
     shutdown:
-      enabled: true
+      access: unrestricted
     health:
       probes:
         enabled: true
   info:
     env:
       enabled: true
-
-endpoints:
-  shutdown:
-    enabled: true
 
 eureka:
   instance:

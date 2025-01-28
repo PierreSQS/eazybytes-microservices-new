@@ -28,14 +28,10 @@ management:
         include: "*"
   endpoint:
     shutdown:
-      enabled: true
+      access: unrestricted
   info:
     env:
       enabled: true
-
-endpoints:
-  shutdown:
-    enabled: true
 
 eureka:
   instance:

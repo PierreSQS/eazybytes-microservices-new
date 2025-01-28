@@ -1,7 +1,7 @@
 services:
 
   kafka:
-    image: docker.io/bitnami/kafka:3.5
+    image: docker.io/bitnami/kafka:3.9
     ports:
       - "9092:9092"
     volumes:
@@ -22,7 +22,7 @@ services:
       service: network-deploy-service
 
   keycloak:
-    image: quay.io/keycloak/keycloak:22.0.1
+    image: quay.io/keycloak/keycloak:26.0.7
     container_name: keycloak
     ports:
       - "7080:8080"
@@ -35,7 +35,7 @@ services:
       service: network-deploy-service
 
   read:
-    image: grafana/loki:2.8.3
+    image: grafana/loki:3.1.2
     command: "-config.file=/etc/loki/config.yaml -target=read"
     ports:
       - 3101:3100
@@ -56,7 +56,7 @@ services:
           - loki
 
   write:
-    image: grafana/loki:2.8.3
+    image: grafana/loki:3.1.2
     command: "-config.file=/etc/loki/config.yaml -target=write"
     ports:
       - 3102:3100
@@ -74,12 +74,14 @@ services:
     networks:
       <<: *loki-dns
 
-  promtail:
-    image: grafana/promtail:2.8.3
+  alloy:
+    image: grafana/alloy:v1.5.1
     volumes:
-      - ../observability/promtail/promtail-local-config.yaml:/etc/promtail/config.yaml:ro
+      - ../observability/alloy/alloy-local-config.yaml:/etc/alloy/config.alloy:ro
       - /var/run/docker.sock:/var/run/docker.sock
-    command: -config.file=/etc/promtail/config.yaml
+    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
+    ports:
+      - 12345:12345
     depends_on:
       - gateway
     extends:
@@ -87,7 +89,7 @@ services:
       service: network-deploy-service
 
   minio:
-    image: minio/minio
+    image: minio/minio:RELEASE.2024-12-18T13-15-44Z
     entrypoint:
       - sh
       - -euc
@@ -114,7 +116,7 @@ services:
       service: network-deploy-service
 
   prometheus:
-    image: prom/prometheus:v2.45.0
+    image: prom/prometheus:v3.1.0
     container_name: prometheus
     ports:
       - "9090:9090"
@@ -125,12 +127,12 @@ services:
       service: network-deploy-service
 
   tempo:
-    image: grafana/tempo
+    image: grafana/tempo:2.6.1
     container_name: tempo
     command: -config.file /etc/tempo-config.yml
     ports:
       - "3110:3100"
-      - "4317:4317"
+      - "4318:4318"
     volumes:
       - ../observability/tempo/tempo.yml:/etc/tempo-config.yml
     extends:
@@ -138,7 +140,7 @@ services:
       service: network-deploy-service
 
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:11.4.0
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - GF_AUTH_ANONYMOUS_ENABLED=true
@@ -163,8 +165,22 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
+  backend:
+    image: grafana/loki:3.1.2
+    volumes:
+      - ../observability/loki/loki-config.yaml:/etc/loki/config.yaml
+    ports:
+      - "3100"
+      - "7946"
+    command: "-config.file=/etc/loki/config.yaml -target=backend -legacy-read-mode=false"
+    depends_on:
+      - gateway
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   gateway:
-    image: nginx:latest
+    image: nginx:1.27.3
     depends_on:
       - read
       - write
@@ -255,6 +271,9 @@ services:
     container_name: eurekaserver-ms
     ports:
       - "8070:8070"
+    depends_on:
+      configserver:
+        condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
       interval: 20s
@@ -277,6 +296,11 @@ services:
       timeout: 5s
       retries: 20
       start_period: 10s
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "accounts"
       OTEL_SERVICE_NAME: "accounts"
@@ -288,6 +312,11 @@ services:
   loans:
     image: "eazybytes/loans:s14"
     container_name: loans-ms
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8090/actuator/health/readiness | grep UP || exit 1"
       interval: 20s
@@ -304,6 +333,11 @@ services:
   cards:
     image: "eazybytes/cards:s14"
     container_name: cards-ms
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:9000/actuator/health/readiness | grep UP || exit 1"
       interval: 20s
