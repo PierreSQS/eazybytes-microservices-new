@@ -19,6 +19,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -110,5 +111,35 @@ class AccountsControllerTest {
                 .andDo(print());
 
         verify(iAccountsServMock, times(1)).updateAccount(customerDto);
+    }
+
+    @Test
+    void deleteAccountDetails_OK() throws Exception{
+        // Given
+        given(iAccountsServMock.deleteAccount(customerDto.getMobileNumber()))
+                .willReturn(true);
+
+        // When, Then
+        mockMvc.perform(delete("/api/delete")
+                        .param("mobileNumber", "1234567890"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusMsg")
+                        .value(AccountsConstants.MESSAGE_200))
+                .andDo(print());
+    }
+
+    @Test
+    void deleteAccountDetails_NOK() throws Exception{
+        // Given
+        given(iAccountsServMock.deleteAccount(customerDto.getMobileNumber()))
+                .willReturn(false);
+
+        // When, Then
+        mockMvc.perform(delete("/api/delete")
+                        .param("mobileNumber", "1234567890"))
+                .andExpect(status().isExpectationFailed())
+                .andExpect(jsonPath("$.statusMsg")
+                        .value(AccountsConstants.MESSAGE_417_DELETE))
+                .andDo(print());
     }
 }
