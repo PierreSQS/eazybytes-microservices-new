@@ -151,4 +151,13 @@ class AccountsControllerTest {
                         .value("1.0.0"))
                 .andDo(print());
     }
+
+    @Test
+    void getBuildInfo() throws Exception {
+        mockMvc.perform(get("/api/build-info"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$")
+                        .value("1.0"))
+                .andDo(print());
+    }
 }
