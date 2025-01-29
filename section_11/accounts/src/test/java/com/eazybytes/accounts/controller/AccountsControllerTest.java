@@ -6,6 +6,8 @@ import com.eazybytes.accounts.service.IAccountsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -36,6 +39,9 @@ class AccountsControllerTest {
     @MockitoBean
     IAccountsService iAccountsServMock;
 
+    @Captor
+    ArgumentCaptor<CustomerDto> customerDtoArgCaptor;
+
     CustomerDto customerDto;
 
     @BeforeEach
@@ -57,7 +63,8 @@ class AccountsControllerTest {
                         .value("Account created successfully"))
                 .andDo(print());
 
-        verify(iAccountsServMock, times(1)).createAccount(customerDto);
+        verify(iAccountsServMock, times(1)).createAccount(customerDtoArgCaptor.capture());
+        assertThat(customerDtoArgCaptor.getValue()).isEqualTo(customerDto);
     }
 
     @Test
