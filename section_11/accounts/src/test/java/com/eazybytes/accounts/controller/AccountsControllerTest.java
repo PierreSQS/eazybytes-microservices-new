@@ -142,4 +142,13 @@ class AccountsControllerTest {
                         .value(AccountsConstants.MESSAGE_417_DELETE))
                 .andDo(print());
     }
+
+    @Test
+    void getBuildInfoActuator() throws Exception {
+        mockMvc.perform(get("/actuator/info"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.app.version")
+                        .value("1.0.0"))
+                .andDo(print());
+    }
 }
