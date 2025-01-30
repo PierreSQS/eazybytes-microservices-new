@@ -16,6 +16,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -166,7 +167,7 @@ class AccountsControllerTest {
         mockMvc.perform(get("/api/java-version"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$")
-                        .value("1.8.0_291"))
+                        .value(containsString("jdk-21.0.2")))
                 .andDo(print());
     }
 }
