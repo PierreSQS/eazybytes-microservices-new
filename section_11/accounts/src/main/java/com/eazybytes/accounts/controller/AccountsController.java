@@ -201,7 +201,7 @@ public class AccountsController {
                     .body(buildVersion);
     }
 
-    public ResponseEntity<String> getBuildInfoFallback() {
+    public ResponseEntity<String> getBuildInfoFallback(Throwable throwable) {
         logger.debug("getBuildInfoFallback() method Invoked");
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -231,7 +231,7 @@ public class AccountsController {
                 .body(environment.getProperty("JAVA_HOME"));
     }
 
-    public ResponseEntity<String> getJavaVersionFallback() {
+    public ResponseEntity<String> getJavaVersionFallback(Throwable throwable) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body("Java 21");

@@ -160,4 +160,13 @@ class AccountsControllerTest {
                         .value("1.0"))
                 .andDo(print());
     }
+
+    @Test
+    void getJavaVersion() throws Exception {
+        mockMvc.perform(get("/api/java-version"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$")
+                        .value("1.8.0_291"))
+                .andDo(print());
+    }
 }
