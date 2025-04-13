@@ -2,6 +2,13 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+  # JWT Validation Endpoint
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:7080/realms/EazyBank/protocol/openid-connect/certs
+
   application:
     name: "gatewayserver"
   config:
