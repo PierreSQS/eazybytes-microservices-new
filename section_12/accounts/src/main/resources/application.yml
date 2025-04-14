@@ -1,6 +1,11 @@
 server:
   port: 8080
 spring:
+  # enable ANSI colors in console output
+  output:
+      ansi:
+        enabled: ALWAYS
+
   application:
     name: "accounts"
   profiles:
@@ -17,7 +22,16 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
-    show-sql: true
+
+    properties:
+      hibernate:
+        # show SQL statements
+        show_sql: true
+        # format SQL statements
+        format_sql: true
+        # enable SQL syntax highlighting
+        highlight_sql: true
+
   config:
     import: "optional:configserver:http://localhost:8071/"
   cloud:
