@@ -1,4 +1,9 @@
 spring:
+  # enable color in console
+  output:
+    ansi:
+      enabled: always
+
   application:
     name: "configserver"
   profiles:
