@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.1</version>
+        <version>3.4.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.eazybytes</groupId>
@@ -28,7 +28,7 @@
     </scm>
 	<properties>
 		<java.version>21</java.version>
-        <spring-cloud.version>2024.0.0</spring-cloud.version>
+        <spring-cloud.version>2024.0.1</spring-cloud.version>
 		<otelVersion>2.11.0</otelVersion>
 	</properties>
 	<dependencies>
@@ -77,7 +77,7 @@
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
-				<version>3.4.2</version>
+				<version>3.4.5</version>
 				<configuration>
 					<to>
 						<image>eazybytes/${project.artifactId}:s12</image>
