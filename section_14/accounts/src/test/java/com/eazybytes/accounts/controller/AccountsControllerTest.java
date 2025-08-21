@@ -9,30 +9,32 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(AccountsController.class)
+@SpringBootTest(classes = AccountsController.class)
+@AutoConfigureMockMvc
 class AccountsControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
-    @MockBean
-    private IAccountsService iAccountsService;
+    @MockitoBean
+    IAccountsService iAccountsService;
 
-    @MockBean
-    private Environment environment;
+    @MockitoBean
+    Environment environment;
 
-    @MockBean
-    private AccountsContactInfoDto accountsContactInfoDto;
+    @MockitoBean
+    AccountsContactInfoDto accountsContactInfoDto;
 
     // --- Good path tests ---
 
