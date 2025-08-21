@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
 import org.apache.http.HttpStatus;
@@ -39,24 +38,21 @@ public class CustomerController {
             summary = "Fetch Customer Details REST API",
             description = "REST API to fetch Customer details based on a mobile number"
     )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "HTTP Status OK"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "HTTP Status Internal Server Error",
-                    content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
-                    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "HTTP Status OK"
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = "HTTP Status Internal Server Error",
+            content = @Content(
+                    schema = @Schema(implementation = ErrorResponseDto.class)
             )
-    }
     )
     @GetMapping("/fetchCustomerDetails")
     public ResponseEntity<CustomerDetailsDto> fetchCustomerDetails(@RequestHeader("eazybank-correlation-id")
                                                                        String correlationId,
-                                                                    @RequestParam @Pattern(regexp="(^$|[0-9]{10})",
+                                                                    @RequestParam @Pattern(regexp="(^$|\\d{10})",
                                                                             message = "Mobile number must be 10 digits")
                                                                    String mobileNumber) {
         logger.debug("fetchCustomerDetails method start");

@@ -5,6 +5,10 @@ import com.eazybytes.accounts.entity.Accounts;
 
 public class AccountsMapper {
 
+    private AccountsMapper() {
+        // Private constructor to prevent instantiation
+    }
+
     public static AccountsDto mapToAccountsDto(Accounts accounts, AccountsDto accountsDto) {
         accountsDto.setAccountNumber(accounts.getAccountNumber());
         accountsDto.setAccountType(accounts.getAccountType());
