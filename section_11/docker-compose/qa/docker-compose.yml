@@ -1,6 +1,6 @@
 services:
   read:
-    image: grafana/loki:3.1.2
+    image: grafana/loki:3.6.2
     command: "-config.file=/etc/loki/config.yaml -target=read"
     ports:
       - 3101:3100
@@ -21,7 +21,7 @@ services:
           - loki
 
   write:
-    image: grafana/loki:3.1.2
+    image: grafana/loki:3.6.2
     command: "-config.file=/etc/loki/config.yaml -target=write"
     ports:
       - 3102:3100
@@ -40,7 +40,7 @@ services:
       <<: *loki-dns
 
   alloy:
-    image: grafana/alloy:v1.5.1
+    image: grafana/alloy:v1.12.0
     volumes:
       - ../observability/alloy/alloy-local-config.yaml:/etc/alloy/config.alloy:ro
       - /var/run/docker.sock:/var/run/docker.sock
@@ -54,7 +54,7 @@ services:
       service: network-deploy-service
 
   minio:
-    image: minio/minio:RELEASE.2024-12-18T13-15-44Z
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
     entrypoint:
       - sh
       - -euc
@@ -81,7 +81,7 @@ services:
       service: network-deploy-service
 
   prometheus:
-    image: prom/prometheus:v3.1.0
+    image: prom/prometheus:v3.8.0
     container_name: prometheus
     ports:
       - "9090:9090"
@@ -92,7 +92,7 @@ services:
       service: network-deploy-service
 
   tempo:
-    image: grafana/tempo:2.6.1
+    image: grafana/tempo:2.9.0
     container_name: tempo
     command: -config.file /etc/tempo-config.yml
     ports:
@@ -105,7 +105,7 @@ services:
       service: network-deploy-service
 
   grafana:
-    image: grafana/grafana:11.4.0
+    image: grafana/grafana:12.3.0
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - GF_AUTH_ANONYMOUS_ENABLED=true
@@ -131,7 +131,7 @@ services:
       service: network-deploy-service
 
   backend:
-    image: grafana/loki:3.1.2
+    image: grafana/loki:3.6.2
     volumes:
       - ../observability/loki/loki-config.yaml:/etc/loki/config.yaml
     ports:
@@ -145,7 +145,7 @@ services:
       service: network-deploy-service
 
   gateway:
-    image: nginx:1.27.3
+    image: nginx:1.29.3
     depends_on:
       - read
       - write

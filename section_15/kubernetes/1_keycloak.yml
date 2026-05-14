@@ -16,19 +16,19 @@ spec:
     spec:
       containers:
         - name: keycloak
-          image: quay.io/keycloak/keycloak:26.0.7
+          image: quay.io/keycloak/keycloak:26.4.7
           args: ["start-dev"]
           env:
-          - name: KEYCLOAK_ADMIN
-            valueFrom:
-              configMapKeyRef:
-                name: eazybank-configmap
-                key: KEYCLOAK_ADMIN
-          - name: KEYCLOAK_ADMIN_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: eazybank-configmap
-                key: KEYCLOAK_ADMIN_PASSWORD
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: eazybank-configmap
+                  key: KC_BOOTSTRAP_ADMIN_USERNAME
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: eazybank-configmap
+                  key: KC_BOOTSTRAP_ADMIN_PASSWORD
           ports:
             - name: http
               containerPort: 8080

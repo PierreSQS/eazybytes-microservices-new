@@ -1,5 +1,5 @@
 #Start with a base image containing Java runtime
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jdk
 
 # MAINTAINER instruction is deprecated in favor of using label
 # MAINTAINER eazybytes.com

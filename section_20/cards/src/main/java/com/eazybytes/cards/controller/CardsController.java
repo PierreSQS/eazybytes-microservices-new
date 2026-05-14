@@ -74,7 +74,7 @@ public class CardsController {
     }
     )
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createCard(@Valid @RequestParam
+    public ResponseEntity<ResponseDto> createCard(@Valid @RequestParam(name = "mobileNumber")
                                                       @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
                                                       String mobileNumber) {
         iCardsService.createCard(mobileNumber);
@@ -102,7 +102,7 @@ public class CardsController {
     })
     @GetMapping("/fetch")
     public ResponseEntity<CardsDto> fetchCardDetails(@RequestHeader("eazybank-correlation-id") String correlationId,
-                                                                @RequestParam
+                                                                @RequestParam(name = "mobileNumber")
                                                                @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
                                                                String mobileNumber) {
         logger.debug("fetchCardDetails method start");
@@ -168,7 +168,7 @@ public class CardsController {
             )
     })
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseDto> deleteCardDetails(@RequestParam
+    public ResponseEntity<ResponseDto> deleteCardDetails(@RequestParam(name = "mobileNumber")
                                                                 @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
                                                                 String mobileNumber) {
         boolean isDeleted = iCardsService.deleteCard(mobileNumber);

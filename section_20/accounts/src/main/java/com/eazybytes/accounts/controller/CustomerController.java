@@ -56,7 +56,7 @@ public class CustomerController {
     @GetMapping("/fetchCustomerDetails")
     public ResponseEntity<CustomerDetailsDto> fetchCustomerDetails(@RequestHeader("eazybank-correlation-id")
                                                                        String correlationId,
-                                                                    @RequestParam @Pattern(regexp="(^$|[0-9]{10})",
+                                                                    @RequestParam(name = "mobileNumber") @Pattern(regexp="(^$|[0-9]{10})",
                                                                             message = "Mobile number must be 10 digits")
                                                                    String mobileNumber) {
         logger.debug("fetchCustomerDetails method start");

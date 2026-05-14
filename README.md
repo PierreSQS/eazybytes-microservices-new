@@ -116,10 +116,10 @@ Learn how to create enterprise and production ready Microservices with Spring, S
 | "docker container logs -f container-id" | To follow log output of a given container id |
 | "docker container rm container-id" | To remove one or more containers based on container ids |
 | "docker container prune" | To remove all stopped containers |
-| "docker compose up" | To create and start containers based on given docker compose file |
-| "docker compose down" | To stop and remove containers |
-| "docker compose start" | To start containers based on given docker compose file |
-| "docker compose down" | To stop the running containers |
+| "docker compose up" | Creates and starts containers based on the given Docker Compose file |
+| "docker compose down" | Stops and removes containers, networks, volumes, and images created by up |
+| "docker compose start" | Starts existing (previously created) containers without recreating them |
+| "docker compose stop" | Stops running containers without removing them |
 | "docker run -p 3306:3306 --name accountsdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=accountsdb -d mysql" | To create a MySQL DB container |
 | "docker run -p 6379:6379 --name eazyredis -d redis" | To create a Redis Container |
 | "docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:22.0.3 start-dev" | To create Keycloak Container|

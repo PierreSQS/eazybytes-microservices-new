@@ -102,7 +102,7 @@ public class AccountsController {
     }
     )
     @GetMapping("/fetch")
-    public ResponseEntity<CustomerDto> fetchAccountDetails(@RequestParam
+    public ResponseEntity<CustomerDto> fetchAccountDetails(@RequestParam(name = "mobileNumber")
                                                                @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
                                                                String mobileNumber) {
         CustomerDto customerDto = iAccountsService.fetchAccount(mobileNumber);
@@ -168,7 +168,7 @@ public class AccountsController {
     }
     )
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseDto> deleteAccountDetails(@RequestParam
+    public ResponseEntity<ResponseDto> deleteAccountDetails(@RequestParam(name = "mobileNumber")
                                                                 @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
                                                                 String mobileNumber) {
         boolean isDeleted = iAccountsService.deleteAccount(mobileNumber);
